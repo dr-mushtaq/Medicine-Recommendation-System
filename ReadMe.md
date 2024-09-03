@@ -1,4 +1,4 @@
-## **Chatbot in e-learning System👋🛒**
+## **Medicine Recommendation System👋🛒**
 <p align="center">
 <img src="https://github.com/hussain0048/Machine-Learning/blob/master/Machine%20Leanring.png"></a>
 </p>
