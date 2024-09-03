@@ -15,13 +15,13 @@ The Medicine Recommendation System is an advanced AI-powered virtual assistant d
 
 **1- Natural Language Processing:** Engage in smooth, human-like conversations with our state-of-the-art NLP capabilities.
 
-**2- Personalized Assistance**: Receive personalized responses based on user profiles and interaction history.
+**2- Personalized Medicine Suggestions:**: Receive personalized medicine recommendations based on your medical history, current conditions, and preferences.
 
 **3- Multi-Platform Support:**: Integrate seamlessly with various platforms including web, mobile, and social media.
 
 **4- Extensible Architecture:**: Easily add new features and functionalities with our modular design.
 
-**5- Real-Time Analytics:**: Monitor and analyze user interactions to continually improve the chatbot experience..
+**5- Real-Time Analytics:**: Monitor and analyze user queries and medication choices to continually improve the accuracy and relevance of medicine recommendations.
 
 ## **Contributing🙌**
 
