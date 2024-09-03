@@ -9,7 +9,7 @@ Welcome to the VU Chatbot System repository! 🚀
 
 ## **Overview👋🛒**
 
-The VU Chatbot System is an advanced AI-powered virtual assistant designed to enhance user interaction and streamline information retrieval. Whether you're a student, educator, or developer, our chatbot provides intuitive and efficient solutions tailored to your needs.
+The Medicine Recommendation System is an advanced AI-powered virtual assistant designed to enhance patient care by providing accurate and personalized medicine suggestions. Whether you're a healthcare provider, pharmacist, or patient, our system offers intuitive and efficient solutions tailored to your medical needs.
 
 ## **Features👋🛒**
 
