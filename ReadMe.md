@@ -125,32 +125,8 @@ Star this repo if you find it useful ⭐
 <summary> <h2>📚Chapter:5-Resources </h2> </summary>
    
   
- - [**Chat with Dataframe - Streamlit Chatbot using Langchian Agent and Ollama | Generative AI | LLM**](https://www.youtube.com/watch?v=u3SGDvOVyO4)
- - [**Build a Large Language Model (From Scratch)**](https://github.com/rasbt/LLMs-from-scratch/tree/main) 
-- [**How to Make a Chatbot In Python? A Step-by-Step Guide with Source Code**](https://medium.com/@pies052022/how-to-make-a-chatbot-in-python-a-step-by-step-guide-with-source-code-c0f0b1c73378)
- - [**4 Chatbot Project with python**](https://amankharwal.medium.com/4-chatbot-projects-with-python-5b32fd84af37)
-- [**Awesome Chatbot Projects**](https://github.com/fendouai/Awesome-Chatbot)
-- [**The Super Duper NLP Repo**](https://notebooks.quantumstat.com/?trk=puboslic_pt-text)
--  [**Innovative-Chatbot-using-1-Dimensional-Convolutional-Layers**](https://github.com/Bharath-K3/Innovative-Chatbot-using-1-Dimensional-Convolutional-Layers)
--  [**3XFake AI Technology: AI, ML, ANNs, Generative AI, LLMs, GPT-5, AGI**](https://www.linkedin.com/pulse/3xfake-technology-ai-anns-generative-llms-gpt-5-agi-azamat-abdoullaev-pbq6f/?fbclid=IwAR1ey2lh8VwC-uh7DTpyqLN3b6mApJF94udSbRq0IPT9KdsXmyFuZNzEqXs_aem_AahJbqC_2_s8m_QppuzUw6CJgneZCNRhHkJBv99BKHgpLOR9m3Prt698gqtUQ24zghC_D6jVcCnk8dTm3jOA3lro)
--  [**Spam Detection using Machine Learning Methods**](https://medium.com/@Coursesteach/spam-detection-using-machine-learning-methods-dd5dbc799b6b)
-- [**Top AI Agents**](https://github.com/SamurAIGPT/Best-AI-Agents)
-- [**Learn to Train and Deploy a Real-Time Financial Advisor**](https://github.com/iusztinpaul/hands-on-llms?tab=readme-ov-file)
--  [**Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection**](https://arxiv.org/abs/2310.11511?fbclid=IwAR1to5thaF8Of2zfNI6O5NeYj8yy7O7QPMzWfvvdMY2x11Hwf85gEgZ2wX8_aem_AVeTQAylHY0xJANFFpZqJBNS0yVMNX2EbYd3Yjvi1rN4o5dqcOX-VNthfqh7Ukv89EFfri29Eibfqa4vCwVY7fMi)
--  [**Advanced RAG 08: Self-RAG**](https://ai.gopubby.com/advanced-rag-08-self-rag-c0c5b5952e0e)
--  [**Build a chatbot with always updated data sources using Pathway + LlamaIndex + Streamlit(Github)**](https://github.com/pathway-labs/realtime-indexer-qa-chat?ref=blog.streamlit.io&fbclid=IwAR0HkaSIQTDCTL7Vw-V6sUMjR1L4vT9movAm3bCfX3ctqLTeALSPkmLMLRY)
--  [**Practical NLP Code Chatbot-BERT(github)**](https://github.com/practical-nlp/practical-nlp-code/tree/master/Ch6)
--  [**Anaconda and Vscode configuration for Python**](https://medium.com/@Coursesteach/anaconda-and-vscode-configuration-b353db76165d)
--   [**Get started with conda environments**](https://www.dataschool.io/intro-to-conda-environments/)
--  [**Getting Started with GitHub Pages**](https://www.youtube.com/watch?v=QyFcl_Fba-k&list=PL4cUxeGkcC9jjuXmnTyPSMo5NZ8dANHSW)
--  [**How to deploy ML models painlessly**](https://www.realworldml.net/blog/how-to-deploy-ml-models-painlessly?fbclid=IwAR2TknQt1Y5e3o2GyHcbW-z4piQnG0lspPWGrN39BN4PjNkb5Lc4DKWINvI)
--  [**Deploy Machine Learning models with FastAPI, Docker, and Heroku**](https://morioh.com/a/a592ccba33fa/deploy-machine-learning-models-with-fastapi-docker-and-heroku)
-- [**End to End Machine Learning project implementation (Part 1)**](https://medium.datadriveninvestor.com/end-to-end-machine-learning-project-implementation-part-1-980162aea228)
-- [**Sentiment Analysis classifier with NLTK's VADER and Huggingface Roberta Transformers**](https://morioh.com/a/d2e99f468750/building-a-python-sentiment-analysis-project-with-nltk-and-transformer#google_vignette)
--  [**A Practical Guide to Transfer Learning using PyTorch**](https://www.kdnuggets.com/2023/06/practical-guide-transfer-learning-pytorch.html?fbclid=IwAR0gJIzXV1TNAenfEwN4HbkFjpRwPCRAzOrI8-6FApEwpyXQW6C71OhRydk)
--  [**Running Flask App On Colab With Ngrok| [ Latest Way ]**](https://www.youtube.com/watch?v=bHtxDiIl0wg)
--  [**Deploy Streamlit app on Google Colaboratory as public app | Ngrok | Python**](https://www.youtube.com/watch?v=Y-lUz7npEGo)
- -  [**Building a Simple Chatbot with Python and Transformers**](https://jasminbharadiya.medium.com/building-a-simple-chatbot-with-python-and-transformers-875aec2f05d8)
+ - [**Personalized-Medical-Recommendation-System-with-Machine-Learning | Generative AI | LLM**](https://github.com/611noorsaeed/Medicine-Recommendation-System-Personalized-Medical-Recommendation-System-with-Machine-Learning)
+
 </details>
 
 
