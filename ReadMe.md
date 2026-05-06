@@ -76,9 +76,18 @@ It uses **Machine Learning (ML)** and **Natural Language Processing (NLP)** to a
 
 ---
 
-## 🧪 Example
+## 🧪 Example Interaction
 
-**Input:**
+**User Input:**
+
+I have fever, headache, and body pain
+
+
+**System Output:**
+
+Possible Condition: Viral Fever
+Recommended Medicine: Paracetamol
+Advice: Stay hydrated and consult a doctor if symptoms persist.
 ## **Contributing🙌**
 
 We welcome contributions from the community! Whether it's fixing a bug, adding a new algorithm implementation, or improving documentation, your contributions are valuable. Please contact on my **skype ID: themushtaq48** for guidelines on how to contribute.
