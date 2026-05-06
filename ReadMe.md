@@ -106,14 +106,20 @@ Recommended Medicine: Paracetamol
 ### Phase 1: Prototype
 - Train ML model on medical dataset  
 - Build basic chatbot  
-- Test symptom prediction  
+- Test symptom prediction
+-
+### Phase 2: 🧪 Evaluation
+- Accuracy alone is not enough in healthcare.
+- Confusion matrix  
+- ROC-AUC
+- False negative rate (VERY important in medical apps)  
 
-### Phase 2: Enhancement
+### Phase 3: Enhancement
 - Improve recommendation accuracy  
 - Add user history tracking  
 - Integrate mobile/web interface  
 
-### Phase 3: Deployment
+### Phase 4: Deployment
 - Deploy full system  
 - Add multilingual support  
 - Enable real-time analytics  
