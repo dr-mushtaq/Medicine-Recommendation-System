@@ -48,13 +48,31 @@ It uses **Machine Learning (ML)** and **Natural Language Processing (NLP)** to a
 
 ---
 
-## 📌 Features
+## 📌 Key Features
 
-- 💡 AI-based medicine suggestions  
-- 💬 Chatbot interface  
-- 📊 Analytics dashboard  
-- 🌐 Multi-platform support  
-- ⚙️ Scalable architecture  
+### 💡 AI-Powered Recommendations
+- Suggests medicines based on symptoms  
+- Personalized outputs using user data  
+- Context-aware responses  
+
+### 💬 Conversational Chatbot
+- Natural language interaction  
+- Real-time query handling  
+- Symptom-based diagnosis assistance  
+
+### 📊 Data-Driven Insights
+- Tracks user behavior  
+- Improves model accuracy over time  
+- Provides analytics dashboard  
+
+### 🌐 Multi-Platform Support
+- Web application  
+- Mobile-friendly interface  
+- API integration support  
+
+### ⚙️ Scalable & Modular
+- Easy to extend with new diseases or datasets  
+- Supports integration with healthcare systems  
 
 ---
 
