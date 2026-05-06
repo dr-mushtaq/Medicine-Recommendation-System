@@ -1,7 +1,7 @@
 # 💊 Medicine Recommendation System: AI-Powered Healthcare Assistant 🤖🩺
 
 <p align="center">
-  <img src="https://github.com/dr-mushtaq/Medicine-Recommendation-System/blob/main/390d268e-5a56-4d73-a56e-57fc740d2d85.png" width="300"/>
+  <img src="https://github.com/dr-mushtaq/Medicine-Recommendation-System/blob/main/390d268e-5a56-4d73-a56e-57fc740d2d85.png" width="600"/>
 </p>
 
 Welcome to the **Medicine Recommendation System** repository! 🚀  
