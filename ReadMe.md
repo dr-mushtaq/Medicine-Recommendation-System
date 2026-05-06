@@ -75,7 +75,6 @@ It uses **Machine Learning (ML)** and **Natural Language Processing (NLP)** to a
 - Supports integration with healthcare systems  
 
 ---
-
 ## 🧪 Example Interaction
 
 **User Input:**
@@ -88,6 +87,38 @@ I have fever, headache, and body pain
 Possible Condition: Viral Fever
 Recommended Medicine: Paracetamol
 Advice: Stay hydrated and consult a doctor if symptoms persist.
+
+## 🧰 Technology Stack
+
+| Component | Tools |
+|----------|------|
+| **ML Models** | Scikit-learn, XGBoost, TensorFlow |
+| **NLP** | NLTK, SpaCy, Transformers (BERT) |
+| **Backend** | Flask / FastAPI |
+| **Frontend** | Streamlit / HTML / React |
+| **Database** | MySQL / Firebase |
+| **Deployment** | AWS / Heroku / Docker |
+
+---
+## 🚀 Development Plan
+
+### Phase 1: Prototype
+- Train ML model on medical dataset  
+- Build basic chatbot  
+- Test symptom prediction  
+
+### Phase 2: Enhancement
+- Improve recommendation accuracy  
+- Add user history tracking  
+- Integrate mobile/web interface  
+
+### Phase 3: Deployment
+- Deploy full system  
+- Add multilingual support  
+- Enable real-time analytics  
+
+
+
 ## **Contributing🙌**
 
 We welcome contributions from the community! Whether it's fixing a bug, adding a new algorithm implementation, or improving documentation, your contributions are valuable. Please contact on my **skype ID: themushtaq48** for guidelines on how to contribute.
