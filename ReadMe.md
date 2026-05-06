@@ -86,7 +86,8 @@ I have fever, headache, and body pain
 
 Possible Condition: Viral Fever
 Recommended Medicine: Paracetamol
-Advice: Stay hydrated and consult a doctor if symptoms persist.
+
+"⚠️ This may indicate Viral Fever. Commonly used medication includes Paracetamol, but please consult a doctor before taking any medicine."
 
 ## 🧰 Technology Stack
 
