@@ -117,7 +117,42 @@ Advice: Stay hydrated and consult a doctor if symptoms persist.
 - Add multilingual support  
 - Enable real-time analytics  
 
+## 🔮 Future Scope
+- Integration with hospital systems  
+- AI-based disease prediction  
+- Voice-enabled medical assistant  
+- Wearable device integration  
+- Personalized healthcare dashboards  
 
+---
+
+## 📬 Contact
+
+For queries or collaboration:
+
+- 📧 Email: mushtaqmsit@gmail.com  
+- 💼 LinkedIn: https://www.linkedin.com  
+- 🎥 YouTube: CoursesTeach  
+
+---
+
+## ⭐ Support
+
+If you find this project useful, please ⭐ star the repository and share it!
+
+---
+
+## ⚠️ Important Note
+
+This system:
+
+- ❌ Does NOT replace doctors  
+- ❌ Should NOT be used for real medical decisions  
+- ✅ Intended for learning, research, and prototyping only  
+
+---
+
+## 🚀 Let’s Build Smarter Healthcare with AI!
 
 ## **Contributing🙌**
 
