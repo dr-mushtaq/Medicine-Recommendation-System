@@ -256,6 +256,7 @@ Star this repo if you find it useful ⭐
  - [**Personalized-Medical-Recommendation-System-with-Machine-Learning | Generative AI | LLM**](https://github.com/611noorsaeed/Medicine-Recommendation-System-Personalized-Medical-Recommendation-System-with-Machine-Learning)
  - [Personalized-Medical-Recommendation-System-with-Machine-Learning](https://github.com/611noorsaeed/Medicine-Recommendation-System-Personalized-Medical-Recommendation-System-with-Machine-Learning/tree/main)
  - [ContextFlow-Recommender](https://github.com/Rafff-ml/ContextFlow-Recommender)
+ - [Medicine Recommendation System Dataset](https://www.kaggle.com/datasets/noorsaeed/medicine-recommendation-system-dataset?resource=download)
    
 
 </details>
