@@ -101,12 +101,22 @@ Recommended Medicine: Paracetamol
 | **Deployment** | AWS / Heroku / Docker |
 
 ---
+Domain-Specific Transformer Models for Medical NLP
+| Model               | Training Data                              | Strengths                                                                | Best Use Case                                                              | Notes                                       |
+| ------------------- | ------------------------------------------ | ------------------------------------------------------------------------ | -------------------------------------------------------------------------- | ------------------------------------------- |
+| BioBERT             | PubMed abstracts + biomedical text corpora | Strong biomedical concept extraction and relation understanding          | Medical literature mining, symptom/diagnosis extraction from research text | General biomedical NLP benchmark model      |
+| ClinicalBERT        | Clinical notes (e.g., MIMIC-III dataset)   | Better at real-world clinical language, abbreviations, and patient notes | Hospital records, symptom descriptions, EHR analysis                       | Often outperforms BioBERT on clinical tasks |
+| Clinical-Longformer | Clinical datasets + long-sequence training | Handles long documents (up to ~4096 tokens) efficiently                  | Long patient histories, discharge summaries, full medical reports          | Designed for long-context medical NLP       |
+
+
 ## 🚀 Development Plan
 
 ### Phase 1: Prototype
 - Train ML model on medical dataset  
 - Build basic chatbot  
 - Test symptom prediction
+
+
 -
 ### Phase 2: 🧪 Evaluation
 - Accuracy alone is not enough in healthcare.
