@@ -294,7 +294,11 @@ Explore cutting-edge tools and Python libraries, access insightful slides and so
 
 <a href="https://app.commanddash.io/agent?github=<your github repo>"><img src="https://img.shields.io/badge/AI-Code%20Gen-EB9FDA"></a>
 
+## License
 
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+All source code and educational material in this repository are released under the MIT License
 
 ## **✨Top Contributors**
 We would love your help in making this repository even better! If you know of an amazing AI course that isn't listed here, or if you have any suggestions for improvement in any course content, feel free to open an issue or submit a course contribution request.
