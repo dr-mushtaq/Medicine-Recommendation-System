@@ -6,6 +6,23 @@
 
 Welcome to the **Medicine Recommendation System** repository! 🚀  
 
+<p align="center">
+  <a href="https://app.commanddash.io/agent?github=https://github.com/hussain0048/Natural-language-processing">
+    <img 
+      src="https://img.shields.io/badge/AI-Code%20Gen-EB9FDA" 
+      alt="AI Code Gen"
+    />
+  </a>
+</p>
+
+<p align="center">
+  <img 
+    src="https://github.com/dr-mushtaq/natural-language-processing-projects-python/blob/main/imresizer-Media%20(1).jpg?raw=true"
+    alt="Natural Language Processing Banner"
+    width="850"
+  />
+</p>
+
 ---
 
 ## 🎯 Overview
