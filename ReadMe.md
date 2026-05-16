@@ -268,13 +268,13 @@ Star this repo if you find it useful ⭐
 
 <details> 
 <summary> <h2>📚Chapter:5-Resources </h2> </summary>
-   
   
  - [**Personalized-Medical-Recommendation-System-with-Machine-Learning | Generative AI | LLM**](https://github.com/611noorsaeed/Medicine-Recommendation-System-Personalized-Medical-Recommendation-System-with-Machine-Learning)
  - [Personalized-Medical-Recommendation-System-with-Machine-Learning](https://github.com/611noorsaeed/Medicine-Recommendation-System-Personalized-Medical-Recommendation-System-with-Machine-Learning/tree/main)
  - [ContextFlow-Recommender](https://github.com/Rafff-ml/ContextFlow-Recommender)
  - [Medicine Recommendation System Dataset](https://www.kaggle.com/datasets/noorsaeed/medicine-recommendation-system-dataset?resource=download)
  - [Build & Deploy ML Regression model with FastAPI, MLFlow, Docker, & AWS](https://youtu.be/Y0SbCp4fUvA?si=8U9M4VG96DM9En-a)
+ - [Hugging Face Hub.](https://huggingface.co/models?sort=trending)
 </details>
 
 
