@@ -32,7 +32,7 @@ It uses **Machine Learning (ML)** and **Natural Language Processing (NLP)** to a
 - Symptom analysis
 - Disease prediction
 - Medicine recommendation
-- Models: Random Forest, XGBoost, SVM
+- Models: Transform Base models
 
 ### 2. Chatbot Interface
 - User-friendly UI (Streamlit / Flask)
@@ -43,9 +43,6 @@ It uses **Machine Learning (ML)** and **Natural Language Processing (NLP)** to a
 - Stores user queries
 - Tracks performance
 - Improves recommendations
-
----
-
 ## 📌 Key Features
 
 ### 💡 AI-Powered Recommendations
