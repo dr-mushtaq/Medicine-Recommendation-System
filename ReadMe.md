@@ -88,9 +88,9 @@ Recommended Medicine: Paracetamol
 
 | Component | Tools |
 |----------|------|
-| **ML Models** | Scikit-learn, XGBoost, TensorFlow |
+| **ML Models** | BioBERT,ClinicalBERT,Clinical-Longformer, TensorFlow |
 | **NLP** | NLTK, SpaCy, Transformers (BERT) |
-| **Backend** | Flask / FastAPI |
+| **Backend** | Flask / FastAPI/Streamlite |
 | **Frontend** | Streamlit / HTML / React |
 | **Database** | MySQL / Firebase |
 | **Deployment** | AWS / Heroku / Docker |
