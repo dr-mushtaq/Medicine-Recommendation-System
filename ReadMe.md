@@ -26,6 +26,13 @@ It uses **Machine Learning (ML)** and **Natural Language Processing (NLP)** to a
 
 ---
 
+
+ ## Quick Start Checklist with Links
+
+- System Architecture [System Architecture](https://github.com/dr-mushtaq/Chatbot-in-e-learning-system/blob/main/System%20Architecture.md) 
+- Subscribe to Chatbot Playlist [Couresesteach on YouTube] [Python Notes](https://docs.google.com/document/d/1cwciLJawfI20iDbzJBPyFKFg25ZZzsUpBP7mUal6uV4/edit?usp=sharing).
+- Enroll in Complete Pyhton Courese [Introduction to Python!](https://coursesteach.com/course/view.php?id=4) to Solve quiz and find extr resources.  
+
 ## 🏗️ System Architecture
 
 ### 1. AI & Recommendation Engine
