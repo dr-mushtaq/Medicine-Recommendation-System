@@ -134,7 +134,16 @@ Domain-Specific Transformer Models for Medical NLP
 ### Phase 4: Deployment
 - Deploy full system  
 - Add multilingual support  
-- Enable real-time analytics  
+- Enable real-time analytics
+
+
+### Phase 5:  Database & Data Layer
+- Implement persistent storage (PostgreSQL/MongoDB):
+  - User medical history
+  - Prediction logs for model improvement
+  - Drug-disease-symptom knowledge graphs
+Add data versioning (DVC) for reproducible ML
+Ensure HIPAA/GDPR compliance for storing health data
 
 ## 🔮 Future Scope
 - Integration with hospital systems  
