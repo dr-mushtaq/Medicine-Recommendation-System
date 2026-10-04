@@ -99,7 +99,7 @@ Recommended Medicine: Paracetamol
 | **NLP** | NLTK, SpaCy, Transformers (BERT) |
 | **Backend** | Flask / FastAPI/Streamlite |
 | **Frontend** | Streamlit / HTML / React |
-| **Database** | MySQL / Firebase |
+| **Database** | MySQL / Firebase/(PostgreSQL/MongoDB) |
 | **Deployment** | AWS / Heroku / Docker |
 
 ---
@@ -114,7 +114,7 @@ Domain-Specific Transformer Models for Medical NLP
 ## 🚀 Development Plan
 
 ### Phase 1: Prototype
-- Train ML model on medical dataset  
+- Train ML model on medical dataset (XGBoost + RoBERTa dual approach (89-91% accuracy is solid) 
 - Build basic chatbot  
 - Test symptom prediction
 
