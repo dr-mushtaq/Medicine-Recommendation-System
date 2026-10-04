@@ -136,7 +136,6 @@ Domain-Specific Transformer Models for Medical NLP
 - Add multilingual support  
 - Enable real-time analytics
 
-
 ### Phase 5:  Database & Data Layer
 - Implement persistent storage (PostgreSQL/MongoDB):
   - User medical history
@@ -144,6 +143,27 @@ Domain-Specific Transformer Models for Medical NLP
   - Drug-disease-symptom knowledge graphs
 Add data versioning (DVC) for reproducible ML
 Ensure HIPAA/GDPR compliance for storing health data
+
+### Phase 6: regulatory & Safety (Months 2-4) — CRITICAL FOR COMMERCIAL
+⚠️ This is non-negotiable for healthcare AI:
+
+FDA/Medical Regulatory Path:
+
+SaMD (Software as Medical Device) classification likely needed
+Requires validation datasets, clinical trials
+Documentation: 510(k) pre-market submission (if applicable in your region)
+Risk Management:
+
+Implement clinical decision support only (not primary diagnosis)
+Add doctor-in-the-loop verification
+Disclaimer & liability framework
+Explainability layer (SHAP/LIME) for model predictions
+Dataset Quality:
+
+Current approach references generic medicines
+Need region-specific pharmaceutical knowledge
+Build against FDA-approved drug databases
+Clinical trial data integration
 
 ## 🔮 Future Scope
 - Integration with hospital systems  
