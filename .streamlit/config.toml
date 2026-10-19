@@ -1,0 +1,8 @@
+[server]
+fileWatcherType = "none"
+
+[browser]
+gatherUsageStats = false
+
+[theme]
+base = "dark"

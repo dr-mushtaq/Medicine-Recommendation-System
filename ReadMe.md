@@ -16,6 +16,20 @@ It uses **Machine Learning (ML)** and **Natural Language Processing (NLP)** to a
 
 ---
 
+
+## Running this implementation
+
+The Streamlit assistant, datasets, training scripts and tests from the working project are in this repository. Setup, model results and data notes are in [docs/implementation.md](docs/implementation.md).
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+streamlit run app.py
+```
+
+The course description names BioBERT, ClinicalBERT and Clinical-Longformer. The running app uses scikit-learn and MiniLM. Model Evaluation reports accuracy, confusion matrices, ROC AUC and false-negative rate from the saved test results.
+
 ## 🎯 Objectives
 
 - Implement **NLP-based chatbot interaction**
