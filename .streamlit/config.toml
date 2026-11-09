@@ -1,5 +1,6 @@
 [server]
-fileWatcherType = "none"
+fileWatcherType = "poll"
+runOnSave = true
 
 [browser]
 gatherUsageStats = false

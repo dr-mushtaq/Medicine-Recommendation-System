@@ -1,8 +1,8 @@
 import base64
 import unittest
 
-from src.composer_drop import accept_drop
-from src.medical_files import MAX_BYTES
+from src.browser.file_drop import accept_drop
+from src.services.medical_files import MAX_BYTES
 
 
 def file(name='sample.txt', text=b'Fictional lab report: Hemoglobin 10.2 g/dL'):

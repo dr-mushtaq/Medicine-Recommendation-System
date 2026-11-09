@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from src.data import load_data
+from src.data.loading import load_data
 
 
 def validate(data):
@@ -90,7 +90,7 @@ def validate(data):
                     or not source.get('accessed_on')
                     or not (source.get('page_last_reviewed') or source.get('updated_on') or source.get('date_not_published') is True)):
                 errors.append(f"Missing source provenance: {row['name']}")
-    from src.hospital_symptoms import validate_hospital_symptoms
+    from src.data.hospital_symptoms import validate_hospital_symptoms
     try:
         validate_hospital_symptoms(data['pakistan_hospital_symptoms'], data['by_symptom'])
     except (ValueError, KeyError, TypeError) as exc:

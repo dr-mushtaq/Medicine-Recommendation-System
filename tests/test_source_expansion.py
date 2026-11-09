@@ -2,9 +2,10 @@ import json
 import unittest
 
 from scripts.collect_pakistan_hospital import parse_page
-from src.data import load_data, symptom_text
-from src.dialogue import extract_symptoms
-from src.health_library import load_health_library
+from src.data.loading import load_data
+from src.ml.features import symptom_text
+from src.chatbot.dialogue import extract_symptoms
+from src.data.health_library import load_health_library
 
 
 class SourceExpansionTests(unittest.TestCase):

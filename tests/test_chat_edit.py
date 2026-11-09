@@ -2,9 +2,9 @@ import unittest
 from copy import deepcopy
 from unittest.mock import Mock
 
-from src.chat_edit import replace_last_turn, turn_attachments, REPORT_PROMPT
-from src.data import load_data
-from src.dialogue import new_state
+from src.chatbot.editing import replace_last_turn, turn_attachments, REPORT_PROMPT
+from src.data.loading import load_data
+from src.chatbot.dialogue import new_state
 
 
 class ChatEditTests(unittest.TestCase):

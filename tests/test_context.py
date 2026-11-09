@@ -1,9 +1,9 @@
 import json
 import unittest
 from unittest.mock import Mock
-from src.data import load_data
-from src.dialogue import new_state, respond
-from src.context_model import DATASET, ARTIFACTS, classify_intent
+from src.data.loading import load_data
+from src.chatbot.dialogue import new_state, respond
+from src.ml.intent_model import DATASET, ARTIFACTS, classify_intent
 
 
 class ContextTests(unittest.TestCase):
@@ -42,6 +42,14 @@ class ContextTests(unittest.TestCase):
         self.assertIn('cough', summary['text'])
         self.assertIn('Common Cold', explanation['text'])
         self.predict.assert_not_called()
+
+    def test_explicit_condition_medicine_lookup_without_previous_match(self):
+        answer = self.say('Show medicine for Common Cold')
+        self.assertFalse(answer['medicine_withheld'])
+        self.assertEqual(answer['data_type'], 'unvalidated_dataset_reference')
+        self.assertIn('unvalidated associations', answer['text'])
+        for name in self.data['by_condition']['Common Cold']['medications'][:5]:
+            self.assertIn(name, answer['text'])
 
     def test_medicine_and_dose_requests_respect_context(self):
         self.say('cough, fever and runny nose for two days')

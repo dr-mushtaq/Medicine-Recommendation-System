@@ -3,7 +3,7 @@ import sqlite3
 import tempfile
 import unittest
 from pathlib import Path
-from src.analytics import record_event, summarize
+from src.services.analytics import record_event, summarize
 
 
 class AnalyticsTests(unittest.TestCase):

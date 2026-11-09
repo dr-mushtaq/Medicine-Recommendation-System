@@ -3,9 +3,9 @@ from unittest.mock import Mock
 from urllib.parse import parse_qs, urlparse
 import re
 
-from src.care_navigation import navigation_reply
-from src.data import load_data
-from src.dialogue import new_state, respond
+from src.chatbot.care_navigation import navigation_reply
+from src.data.loading import load_data
+from src.chatbot.dialogue import new_state, respond
 
 
 class CareNavigationTests(unittest.TestCase):

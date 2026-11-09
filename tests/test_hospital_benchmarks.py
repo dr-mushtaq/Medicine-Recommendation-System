@@ -2,7 +2,7 @@ import hashlib
 import json
 import unittest
 from pathlib import Path
-from src.regional_data import REGIONAL_DIR, false_negative_rate
+from src.data.regional import REGIONAL_DIR, false_negative_rate
 
 
 class HospitalBenchmarkTests(unittest.TestCase):

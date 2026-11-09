@@ -1,0 +1,133 @@
+"""Context memory and constrained follow-up replies, separate from diagnosis labels."""
+import logging
+import re
+
+
+def remember_details(text, state):
+    details = state.setdefault('details', {})
+    duration = re.search(r'\b(?:for\s+(?:the\s+)?(?:last\s+)?|since\s+|started\s+|began\s+)([^.!?;,]{1,55})', text, re.I)
+    if duration and re.search(r'\b(hour|day|week|month|year|morning|night|afternoon|evening|yesterday|today|monday|tuesday|wednesday|thursday|friday|saturday|sunday|weekend|fortnight)', duration.group(), re.I):
+        details['duration'] = duration.group().strip()
+    severity = re.search(r'\b(?:\d{1,2}\s*(?:/|out of)\s*10|mild|moderate|severe)\b', text, re.I)
+    if severity and not re.search(r'\b(?:not|no|never)\s+(?:very\s+)?$', text[:severity.start()], re.I):
+        details['severity'] = severity.group().lower()
+
+
+def context_reply(text, state, data, blocked):
+    from src.ml.intent_model import classify_intent
+    norm = text.lower()
+    # Explicit medication boundaries are handled even when model confidence is low.
+    if re.search(r'\b(dosage|dose|dosing|milligrams|mg)\b|how (?:many|much|often|frequently).*(?:tablet|pill|medicin|take)', norm):
+        intent = 'dose_question'
+    elif (re.fullmatch(r'\s*(?:medicines?|medications?)(?: please)?[?.!]*\s*', norm) or
+          (re.search(r'\b(medicine|medication|tablet|painkiller|antibiotic|paracetamol|ibuprofen)\w*\b', norm) and
+           re.search(r'\b(what|which|can|could|should|show|tell|take)\b', norm))):
+        intent = 'medicine_question'
+    else:
+        try:
+            intent = classify_intent(text)
+        except (FileNotFoundError, ValueError, OSError, ImportError):
+            logging.warning('Context model unavailable; using the symptom dialogue fallback.')
+            return None
+    def reply(content, **extra):
+        return {'text': content, 'predictions': [], 'intent': intent, **extra}
+    details = state.setdefault('details', {})
+    labels = [data['by_symptom'][key]['label'] for key in state['symptoms']]
+    if intent == 'greeting':
+        return reply('Hello. Tell me what you’re experiencing, or use the plus icon to add a report and ask about it.')
+    if intent == 'gratitude':
+        return reply('You’re welcome. You can add another detail or ask a follow-up question at any time.')
+    if intent == 'report_help':
+        return reply('Use the plus icon inside the input to choose a report. You can send it with a question or on its own. Remove it with the close icon before sending if needed.')
+    if intent == 'dose_question':
+        return reply('I can’t calculate a dose or dosing schedule from this conversation. '
+                     'Please check the medicine’s leaflet and ask a pharmacist or clinician about the correct dose for you.', medicine_withheld=True)
+    if intent == 'summary':
+        parts = ['**Your conversation so far**', '**Symptoms:** ' + (', '.join(labels) if labels else 'No active symptoms recorded yet.')]
+        if state.get('active_health_report'):
+            parts.append('**Latest concern:** ' + state['active_health_report'])
+        if state['denied']:
+            parts.append('**Symptoms you denied:** ' + ', '.join(data['by_symptom'][s]['label'] for s in state['denied']))
+        parts.extend(f'**{key.title()}:** {value}' for key, value in details.items())
+        if state.get('last_condition'):
+            parts.append('**Previous possible match:** ' + state['last_condition'] + '.')
+        if blocked:
+            parts.append('**Health context noted:** medicine suitability needs a clinician’s review.')
+        if state['pending']:
+            parts.append('**Still to clarify:** whether you also have ' + data['by_symptom'][state['pending']]['label'] + '.')
+        return reply('\n\n'.join(parts))
+    if intent == 'explain_match':
+        condition = state.get('last_condition')
+        if not condition:
+            return reply('There isn’t a clear condition match to explain yet. ' +
+                         ('I’m keeping track of ' + ', '.join(labels) + '. ' if labels else '') +
+                         'Tell me more about your symptoms or answer the follow-up question.')
+        record = data['by_condition'][condition]
+        overlap = [data['by_symptom'][s]['label'] for s in state['symptoms'] if s in record['symptoms']]
+        return reply(f'**{condition}** came up as one possible match for the symptoms you described.\n\n' + record['description'] +
+                     '\n\nSymptoms that fit this possibility: ' + (', '.join(overlap) or 'None of the symptoms you shared') +
+                     '. These symptoms alone cannot confirm the cause. I’ve kept any duration or severity details you shared '
+                     'in our conversation, but this suggestion is based only on the symptoms you shared. ')
+    if intent == 'medicine_question':
+        # An explicit condition lookup does not require a previous classifier result.
+        # These are raw FYP dataset associations, not treatment recommendations.
+        matches = [row for row in data['by_condition'].values()
+                   if re.search(r'(?<!\w)' + re.escape(row['name']) + r'(?!\w)', text, re.I)]
+        if matches and not blocked:
+            record = max(matches, key=lambda row: len(row['name']))
+            names = record.get('medications', [])
+            if names:
+                return reply('**Dataset medicine entries for ' + record['name'] + ' (FYP reference)**\n\n' +
+                             '\n'.join('- ' + name for name in names[:5]) +
+                             '\n\nThese are unvalidated associations copied from the project dataset. '
+                             'They may be incorrect and must not be used to choose treatment. '
+                             'Some entries are medicine classes or procedures rather than medicine names.',
+                             reference_condition=record['name'], medicine_withheld=False,
+                             data_type='unvalidated_dataset_reference', dataset_source='data/conditions.json')
+        condition = state.get('last_condition')
+        if blocked:
+            return reply('I’ve noted your health details. I can’t tell which medicine would be safe for you or how it may affect '
+                         'other medicines you take.', medicine_withheld=True)
+        if state.get('active_health_report'):
+            return reply('For your latest concern, **' + state['active_health_report'] + '**, '
+                         'the right medicine depends on the cause. If you have a medicine in mind, '
+                         'tell me its name and I can explain its uses and safety information.',
+                         medicine_withheld=True)
+        if not condition:
+            if labels:
+                mentioned = labels[0] if len(labels) == 1 else ', '.join(labels[:-1]) + ' and ' + labels[-1]
+                next_step = ('How long have these symptoms been happening?' if not details.get('duration') else
+                             'Have you noticed any other symptoms?')
+                return reply('You mentioned **' + mentioned + '**. The earlier results were possible causes; '
+                             'they don’t tell us which medicine would help. '
+                             + next_step + ' If you have a medicine in mind, tell me its name and I can explain it.',
+                             medicine_withheld=True)
+            return reply('I don’t have a clear symptom-based match to attach medicine information to. '
+                         'Describe your symptoms first. I can show educational references, but cannot choose a medicine for you.', medicine_withheld=True)
+        record = data['by_condition'][condition]
+        if not record['medications']:
+            return reply('I don’t have checked medicine information for this condition.', medicine_withheld=True)
+        return reply('**Educational medicine information for the previous possible match: ' + condition + '**\n\n' +
+                     '\n'.join('- ' + name for name in record['medications'][:5]) +
+                     '\n\nThese medicine names have not been checked by healthcare professionals. They are for learning only; I can’t tell whether they would be safe or helpful for you.',
+                     condition=condition, medicine_withheld=False)
+    if intent in {'duration', 'severity', 'improving', 'worsening'}:
+        if not labels:
+            return reply('I can note that detail once I know which symptoms you mean. What symptoms are you experiencing?')
+        if intent == 'duration':
+            details['duration'] = text.strip()[:100]
+        elif intent == 'severity':
+            details['severity'] = text.strip()[:100]
+        elif intent in {'improving', 'worsening'}:
+            details['trend'] = intent
+        lead = {'duration': 'I’ve noted how long this has been happening.',
+                'severity': 'I’ve noted the severity you described.',
+                'improving': 'I’ve noted that you’re feeling better. This doesn’t confirm the cause.',
+                'worsening': 'I’ve noted that your symptoms are worsening or not improving. Please seek a clinician’s assessment.'}[intent]
+        content = lead + '\n\nI’m still keeping track of **' + ', '.join(labels) + '**.'
+        if state['pending']:
+            content += '\n\nDo you also have **' + data['by_symptom'][state['pending']]['label'] + '**?'
+        else:
+            content += ' Have any symptoms changed or have you noticed anything new?'
+        return reply(content)
+    return None

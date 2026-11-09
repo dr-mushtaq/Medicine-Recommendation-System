@@ -1,9 +1,9 @@
 import copy
 import unittest
 
-from src.data import load_data
-from src.dialogue import extract_symptoms
-from src.hospital_symptoms import validate_hospital_symptoms
+from src.data.loading import load_data
+from src.chatbot.dialogue import extract_symptoms
+from src.data.hospital_symptoms import validate_hospital_symptoms
 
 
 class HospitalSymptomTests(unittest.TestCase):

@@ -2,8 +2,8 @@ import json
 import unittest
 from unittest.mock import Mock
 
-from src.data import ARTIFACT_DIR, fingerprint, load_data
-from src.dialogue import emergency, extract_symptoms, new_state, next_question, respond
+from src.data.loading import ARTIFACT_DIR, fingerprint, load_data
+from src.chatbot.dialogue import emergency, extract_symptoms, new_state, next_question, respond
 
 
 class DialogueTests(unittest.TestCase):
@@ -246,7 +246,7 @@ class DialogueTests(unittest.TestCase):
         self.predict.assert_not_called()
 
     def test_spelling_is_bounded(self):
-        from src.dialogue import correct_spelling
+        from src.chatbot.dialogue import correct_spelling
         self.assertEqual(correct_spelling('dirhea researchdirhea')[0],'diarrhea researchdirhea')
 
     def test_metrics_match_json(self):

@@ -7,7 +7,7 @@ sys.path.insert(0, str(ROOT))
 
 from huggingface_hub import snapshot_download
 
-from src.models import BASE_MODEL, BASE_REVISION
+from src.ml.condition_model import BASE_MODEL, BASE_REVISION
 
 if __name__ == '__main__':
     snapshot_download(

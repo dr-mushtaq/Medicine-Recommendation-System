@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 from scripts.audit_data import validate
 from scripts.prepare_json import validate_condition_tables
-from src.data import load_data
+from src.data.loading import load_data
 
 
 class DataQualityTests(unittest.TestCase):

@@ -19,7 +19,7 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from src.regional_data import false_negative_rate, load_regional_preview, REGIONAL_DIR
+from src.data.regional import false_negative_rate, load_regional_preview, REGIONAL_DIR
 
 TASKS = {
     'pakistan_heart_failure': {'positive': '1', 'drop': ['time'],

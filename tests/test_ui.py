@@ -31,7 +31,7 @@ class UITests(unittest.TestCase):
         self.assertFalse(at.exception)
         return at
 
-    @patch('src.models.predict', return_value=[
+    @patch('src.ml.condition_model.predict', return_value=[
         {'condition': 'Common Cold', 'probability': .9},
         {'condition': 'Allergy', 'probability': .06},
         {'condition': 'Pneumonia', 'probability': .02}])
@@ -182,7 +182,7 @@ class UITests(unittest.TestCase):
         at.session_state['chats'][key]['draft_files'] = [
             {'id': 'sample', 'name': 'lab.txt', 'text': '[Text file]\nHemoglobin 12.4 g/dL'}]
         at.run()
-        with patch('src.general_qa.answer_general_question', return_value={
+        with patch('src.chatbot.general_answers.answer_general_question', return_value={
                 'text': 'Your report lists hemoglobin as 12.4 g/dL (lab.txt).',
                 'predictions': [], 'intent': 'general_question'}):
             click(at, 'Send')
@@ -201,7 +201,7 @@ class UITests(unittest.TestCase):
             {'id': 'demo', 'name': 'lab.txt', 'text': 'Hemoglobin 12.4 g/dL'}]
         at.run()
         self.assertFalse(at.session_state['chats'][key]['state'].get('medical_files'))
-        with patch('src.general_qa.answer_general_question', return_value={
+        with patch('src.chatbot.general_answers.answer_general_question', return_value={
                 'text': 'Report explanation', 'predictions': []}) as answer:
             send(at, 'Explain the hemoglobin value')
         chat = at.session_state['chats'][key]
@@ -217,7 +217,7 @@ class UITests(unittest.TestCase):
         at.session_state['chats'][key]['draft_files'] = [dict(report, id='edit-file')]
         at.run()
         response = {'text': 'Report explanation', 'predictions': [], 'intent': 'general_question', 'retryable': True}
-        with patch('src.general_qa.answer_general_question', return_value=response) as answer:
+        with patch('src.chatbot.general_answers.answer_general_question', return_value=response) as answer:
             click(at, 'Send')
             chat = at.session_state['chats'][key]
             self.assertTrue(chat['messages'][-2]['file_only'])
@@ -261,7 +261,7 @@ class UITests(unittest.TestCase):
         second = {'name': 'second.txt', 'text': 'Fictional second report'}
         at.session_state['chats'][key]['draft_files'] = [dict(first, id='first'), dict(second, id='second')]
         at.run()
-        with patch('src.general_qa.answer_general_question', return_value={
+        with patch('src.chatbot.general_answers.answer_general_question', return_value={
                 'text': 'Report explanation', 'predictions': [], 'intent': 'general_question'}) as answer:
             click(at, 'Send')
             click(at, 'Edit last prompt')
@@ -300,7 +300,7 @@ class UITests(unittest.TestCase):
         send(at, 'cough')
         key = at.session_state['active_chat']
         last_id = at.session_state['chats'][key]['messages'][-1]['id']
-        with patch('src.ui.scroll_to_message') as scroll:
+        with patch('src.ui.chat.scroll_to_message') as scroll:
             click(at, 'Health context')
             click(at, 'Back to conversation')
             scroll.assert_called_once()
@@ -357,14 +357,14 @@ class UITests(unittest.TestCase):
     def test_voice_transcript_is_editable_removable_and_can_send_alone(self):
         at = self.app()
         key = at.session_state['active_chat']
-        with patch('src.voice_input.voice_input', return_value={'type': 'transcript', 'id': 'speech1', 'text': 'cough'}):
+        with patch('src.browser.voice.voice_input', return_value={'type': 'transcript', 'id': 'speech1', 'text': 'cough'}):
             at.run()
             self.assertFalse(at.exception)
             self.assertEqual(at.session_state['chats'][key]['voice_draft'], 'cough')
             click(at, 'Remove voice transcript')
             self.assertNotIn('voice_draft', at.session_state['chats'][key])
             self.assertEqual(len(at.session_state['chats'][key]['messages']), 0)
-        with patch('src.voice_input.voice_input', return_value={'type': 'transcript', 'id': 'speech2', 'text': 'fever'}):
+        with patch('src.browser.voice.voice_input', return_value={'type': 'transcript', 'id': 'speech2', 'text': 'fever'}):
             at.run()
             field = next(t for t in at.text_area if t.label == 'Voice transcript · review before sending')
             field.set_value('headache').run()
@@ -381,7 +381,7 @@ class UITests(unittest.TestCase):
         event = {'type': 'files', 'id': 'drop1', 'chat_id': key,
                  'files': [{'name': 'fictional-report.txt', 'content': base64.b64encode(
                      b'Fictional report: Hemoglobin 10.2 g/dL; sample range 12-16; LOW').decode()}]}
-        with patch('src.composer_drop.composer_drop', return_value=event):
+        with patch('src.browser.file_drop.composer_drop', return_value=event):
             at.run()
             chat = at.session_state['chats'][key]
             self.assertEqual(len(chat['draft_files']), 1)
@@ -391,7 +391,7 @@ class UITests(unittest.TestCase):
             self.assertEqual(chat['draft_files'], [])
             self.assertEqual(len(chat['messages']), 0)
         event['id'] = 'drop2'
-        with patch('src.composer_drop.composer_drop', return_value=event), patch('src.ui.respond', return_value={
+        with patch('src.browser.file_drop.composer_drop', return_value=event), patch('src.ui.chat.respond', return_value={
                 'text': 'This fictional report flags hemoglobin as low.', 'intent': 'general'}):
             at.run()
             click(at, 'Send')
@@ -409,7 +409,7 @@ class UITests(unittest.TestCase):
         response.__exit__ = Mock(return_value=None)
         response.read = Mock(return_value=b'{"choices":[{"message":{"content":"A helpful answer."}}]}')
         error = HTTPError(settings['MRS_LLM_URL'], 429, 'Rate limited', {}, None)
-        with patch.dict(os.environ, settings), patch('src.general_qa.urlopen', side_effect=[error, response]):
+        with patch.dict(os.environ, settings), patch('src.chatbot.general_answers.urlopen', side_effect=[error, response]):
             at = self.app()
             send(at, 'How can I stay healthy?')
             key = at.session_state['active_chat']
@@ -418,6 +418,36 @@ class UITests(unittest.TestCase):
         messages = at.session_state['chats'][key]['messages']
         self.assertEqual(len(messages), 2)
         self.assertEqual(messages[-1]['content'], 'A helpful answer.')
+        self.assertFalse(at.exception)
+
+    def test_retry_reads_pdf_added_during_an_ongoing_conversation(self):
+        settings = {'MRS_LLM_BACKEND': 'openai', 'MRS_LLM_MODEL': 'test-model',
+                    'MRS_LLM_URL': 'https://example.test/chat', 'MRS_LLM_API_KEY': 'test-key'}
+        response = Mock()
+        response.__enter__ = Mock(return_value=response)
+        response.__exit__ = Mock(return_value=None)
+        response.read = Mock(return_value=b'{"choices":[{"message":{"content":"Hemoglobin is listed as 10.2 g/dL."}}]}')
+        error = HTTPError(settings['MRS_LLM_URL'], 429, 'Rate limited', {}, None)
+        table = '[Page 1]\nHemoglobin\n10.2\ng/dL\n12.0 - 16.0\nLOW\nFerritin\n8\nng/mL\n'
+        with patch.dict(os.environ, settings), patch('src.chatbot.general_answers.urlopen', side_effect=[error, response]) as provider:
+            at = self.app()
+            send(at, 'fatigue, headache and cough for two days')
+            key = at.session_state['active_chat']
+            at.session_state['chats'][key]['draft_files'] = [
+                {'id': 'lab', 'name': 'fictional-medical-report.pdf', 'text': table}]
+            at.run()
+            click(at, 'Send')
+            chat = at.session_state['chats'][key]
+            self.assertIn('Hemoglobin 10.2 g/dL', chat['messages'][-1]['content'])
+            self.assertIn('fatigue', chat['state']['symptoms'])
+            click(at, 'Retry answer')
+        chat = at.session_state['chats'][key]
+        self.assertEqual(chat['messages'][-1]['content'], 'Hemoglobin is listed as 10.2 g/dL.')
+        self.assertEqual(chat['messages'][-2]['attachments'], ['fictional-medical-report.pdf'])
+        self.assertEqual(chat['state']['medical_files'][0]['text'], table)
+        request = provider.call_args.args[0].data.decode()
+        self.assertIn('10.2', request)
+        self.assertIn('fatigue, headache and cough', request)
         self.assertFalse(at.exception)
 
     def test_edit_last_message_replaces_reply_and_restores_state(self):
@@ -438,7 +468,7 @@ class UITests(unittest.TestCase):
         self.assertEqual(chat['messages'][1]['intent'], 'sex_headache')
         self.assertEqual(chat['state']['symptoms'], ['headache'])
         self.assertFalse(chat['state']['urgent'])
-        from src.analytics import summarize
+        from src.services.analytics import summarize
         self.assertEqual(summarize()['responses'], 1)
         self.assertEqual(summarize()['urgent_conversations'], 0)
 

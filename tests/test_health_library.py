@@ -5,10 +5,10 @@ from urllib.error import URLError
 
 from scripts.collect_health_library import HTML, excerpt, medicine_key
 from scripts.audit_health_library import validate
-from src.health_library import load_health_library, answer_records
-from src.general_qa import _matched_references, answer_general_question
-from src.data import load_data
-from src.dialogue import new_state
+from src.data.health_library import load_health_library, answer_records
+from src.chatbot.general_answers import _matched_references, answer_general_question
+from src.data.loading import load_data
+from src.chatbot.dialogue import new_state
 
 
 class HealthLibraryTests(unittest.TestCase):
@@ -51,7 +51,7 @@ class HealthLibraryTests(unittest.TestCase):
         data=load_data()
         if not data['health_library']['manifest']:
             self.skipTest('Collection still in progress')
-        with patch('src.general_qa.urlopen', side_effect=URLError('offline')):
+        with patch('src.chatbot.general_answers.urlopen', side_effect=URLError('offline')):
             result=answer_general_question('What is shingles?',new_state(),data)
         self.assertEqual(result['intent'],'reference_fallback')
         self.assertTrue(any('/shingles' in s for s in result['sources']))

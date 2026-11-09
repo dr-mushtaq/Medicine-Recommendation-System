@@ -68,17 +68,14 @@ show a setup message while local Ollama continues to work for local development.
 
 ## Layout
 
-```
-app.py                 Streamlit entry
-src/                   chat, data, models, UI
-data/                  JSON knowledge base
-scripts/               import CSVs, download MiniLM, train
-artifacts/chatbot/     saved models and metrics
-references/supervisor/ original CSVs and documents
-tests/
-```
+See [the project README](../README.md) for the folder map and
+[the code guide](code-guide.md) for module responsibilities. The Streamlit UI is
+in `src/ui/`; `app.py` remains the launch command. Original project materials are
+in `docs/archive/`, `docs/deliverables/`, `notebooks/` and `references/`.
 
-The main experience is a styled Streamlit conversation with recent chats, optional **Health context**, **Conversation history**, and **About & sources**. Dataset Preview and Model Evaluation remain available under **About & sources → Technical details & project resources**.
+The main experience is a styled Streamlit conversation with recent chats, optional
+**Health context**, **Conversation history**, and **About & sources**. Dataset Preview
+and Model Evaluation remain available under **About & sources → Project resources**.
 
 ## Rebuild
 
@@ -96,7 +93,7 @@ streamlit run app.py
 
 The one-time download fetches public `sentence-transformers/all-MiniLM-L6-v2` at revision `1110a243fdf4706b3f48f1d95db1a4f5529b4d41`. Training and inference are local. Only locally generated `baseline.joblib` should be loaded.
 
-Restart Streamlit after Python edits; file watching is off to avoid PyTorch watcher issues.
+Streamlit polls for local Python changes and reruns on save. After changing server configuration, restart Streamlit so the new settings take effect.
 
 ## Data
 
@@ -122,7 +119,7 @@ and primary-care studies in Pakistan, Bangladesh and India (4,169 source rows,
 sites, Faisalabad Institute of Cardiology/Allied Hospital, Sylhet Diabetes Hospital,
 and an Indian CKD cohort reported as Apollo Hospitals. Licences, original study
 targets, variable definitions, source links and checksums accompany the prepared
-JSONL files. See [the regional data guide](data/regional/README.md).
+JSONL files. See [the regional source catalog](../data/regional/sources.json).
 
 These cohorts are research-only because their outcomes and features differ from
 the general symptom-classification task. They are not relabelled as disease
@@ -142,7 +139,7 @@ subsets stay in training, with their original training parent or source profile.
 Each label and training family receives equal total training weight. Head
 regularization and transformer checkpoint selection use the original validation
 set; the test set is untouched during selection. Ten added labels have no
-independent evaluation. See [the expansion guide](data/EXPANSION.md).
+independent evaluation. See [the expansion guide](../data/EXPANSION.md).
 
 | Model | Correct / test | Accuracy |
 |---|---:|---:|
@@ -210,7 +207,7 @@ Optional local semantic search uses `abhinand/MedEmbed-small-v0.1` at pinned rev
 `40a5850d046cfdb56154e332b4d7099b63e8d50e`. Run
 `python scripts/download_medembed.py` once, then call
 `search_references(question, data['reference_conditions'])` from
-`src.reference_search`. It ranks passages from the source-linked summaries
+`src.ml.reference_search`. It ranks passages from the source-linked summaries
 and returns their URLs; similarity is not diagnostic confidence. It does not
 extend the condition classifier.
 
@@ -373,3 +370,34 @@ Original uploaded files are not deliberately saved to the project. OCR temporary
 files are deleted after extraction. Reports are treated as untrusted source data,
 not instructions, and do not feed the symptom classifier. Replies explain the
 report with filename/page references; they do not diagnose or prescribe.
+
+### Medicine topics and web references
+
+Named medicines and brand variants route to the general answer model before the
+symptom questionnaire. A standalone product name uses the latest topic without
+replaying unrelated symptom history. Exact local drug-label references and
+verified Pakistan Panadol variant summaries supply source context. Missing
+information topics use a bounded public-web search and fetch HTTPS pages only
+from the medical-reference and manufacturer allowlist in
+`src/services/web_references.py`. Only the latest question is searched; saved
+conversation history and uploaded reports are not included in the search.
+Retrieved page text is untrusted reference data. Network or model failures use
+available source excerpts; they do not restart a previous symptom interview.
+
+The local model requires a running `ollama serve` process on port 11434 and the
+`qwen3:4b` model. Model files alone are insufficient without the Ollama runtime.
+
+### Source-backed symptom relief and regression evidence
+
+`src/chatbot/symptom_relief.py` supplies bounded educational relief examples
+for supported symptoms using the checked-in drug labels and an NHS ORS reference.
+It does not use the legacy disease-to-medication mappings to choose treatment.
+The UI displays relief text and sources during clarification and after results;
+profile/urgent context suppresses previously rendered relief suggestions.
+Known Panadol formulation contradictions in generated text fall back to exact
+manufacturer references. Truncated reasoning falls back to available references.
+
+Use `scripts/run_tests.py` for deterministic Python/component regressions and
+`scripts/smoke_chat.py` for live synthetic classifier/Qwen/web scenarios. Saved
+JSON and regression logs are in `output/verification/`. Passing these checks
+demonstrates the listed behaviors only; it is not clinical validation.

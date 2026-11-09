@@ -5,10 +5,10 @@ from io import BytesIO
 from unittest.mock import Mock, patch
 from pypdf import PdfWriter
 
-from src.data import load_data
-from src.dialogue import new_state, respond
-from src.medical_files import read_report, MAX_BYTES
-from src.general_qa import answer_general_question
+from src.data.loading import load_data
+from src.chatbot.dialogue import new_state, respond
+from src.services.medical_files import read_report, MAX_BYTES
+from src.chatbot.general_answers import answer_general_question
 
 
 class MedicalFileTests(unittest.TestCase):
@@ -75,7 +75,7 @@ class MedicalFileTests(unittest.TestCase):
         response.read = Mock(return_value=json.dumps({'choices': [{'message': {'content': 'Explanation'}}]}).encode())
         settings = {'MRS_LLM_BACKEND': 'openai', 'MRS_LLM_URL': 'https://example.test/chat',
                     'MRS_LLM_MODEL': 'test-model', 'MRS_LLM_API_KEY': 'test-key'}
-        with patch.dict(os.environ, settings), patch('src.general_qa.urlopen', return_value=response) as send:
+        with patch.dict(os.environ, settings), patch('src.chatbot.general_answers.urlopen', return_value=response) as send:
             answer_general_question('explain my report', state, load_data())
         payload = json.loads(send.call_args.args[0].data)
         self.assertIn('untrusted data', payload['messages'][0]['content'])

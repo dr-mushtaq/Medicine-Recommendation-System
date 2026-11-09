@@ -3,7 +3,7 @@ import json
 import re
 from urllib.parse import urlparse
 
-from src.health_library import DIRECTORY, load_health_library
+from src.data.health_library import DIRECTORY, load_health_library
 from scripts.collect_health_library import medicine_key
 
 

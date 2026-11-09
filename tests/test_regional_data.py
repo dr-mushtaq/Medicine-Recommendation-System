@@ -5,8 +5,8 @@ import unittest
 from pathlib import Path
 
 from scripts.collect_regional_data import clean, prepare_records
-from src.data import ARTIFACT_DIR, fingerprint, load_data
-from src.regional_data import REGIONAL_DIR, audit_regional
+from src.data.loading import ARTIFACT_DIR, fingerprint, load_data
+from src.data.regional import REGIONAL_DIR, audit_regional
 
 
 class RegionalDataTests(unittest.TestCase):

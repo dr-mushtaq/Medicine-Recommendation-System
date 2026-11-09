@@ -1,6 +1,6 @@
 import unittest
 
-from src.browser_history import valid_history
+from src.browser.history import valid_history
 
 
 class BrowserHistoryTests(unittest.TestCase):
