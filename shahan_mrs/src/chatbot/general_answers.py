@@ -29,6 +29,10 @@ def _model_setting(name, default=''):
         return st.secrets.get(name, default)
     except (FileNotFoundError, KeyError, RuntimeError, ValueError):
         return default
+QUESTION_PREAMBLE = re.compile(
+    r'^(?:i (?:just ask(?:ed)?|(?:just )?want to ask|have) (?:you )?'
+    r'(?:a |one )?(?:simple |quick )?question|my question is)[\s,:.!-]+', re.I
+)
 QUESTION_START = re.compile(
     r'^(?:what|why|how|when|where|who|which|can|could|does|do|is|are|tell me|explain)\b', re.I
 )
@@ -50,7 +54,7 @@ def _unavailable(message, retryable=False):
 
 def is_information_question(text):
     """Keep first-person symptom reports in the existing symptom flow."""
-    message = text.strip()
+    message = QUESTION_PREAMBLE.sub('', text.strip(), count=1)
     return bool(QUESTION_START.match(message) or message.endswith('?')) and not PERSONAL_SYMPTOMS.search(message)
 
 
@@ -93,10 +97,10 @@ def _matched_references(question, records):
 
 def answer_general_question(question, state, data):
     from src.chatbot.routing import report_question, social_reply
-    social = social_reply(question)
+    reports = state.get('medical_files', []) if report_question(question, state) else []
+    social = social_reply(question) if not reports else None
     if social:
         return {'text': social, 'predictions': [], 'intent': 'greeting'}
-    reports = state.get('medical_files', []) if report_question(question, state) else []
     protected = protected_attachment_reply(reports)
     if protected:
         return protected

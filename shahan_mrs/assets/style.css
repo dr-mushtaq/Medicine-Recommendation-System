@@ -116,6 +116,7 @@ p,li { line-height:1.65; }
  .welcome svg { width:46px; height:46px; }
  .welcome p { line-height:1.6; }
 }
+[data-testid="stChatMessage"]:has(.user-author) [data-testid="stMarkdownContainer"] p { white-space:pre-line; }
 [data-testid="stChatMessage"]:has(.user-author) { background:var(--surface-raised); border:0; border-radius:16px 4px 16px 16px; margin-left:auto; max-width:86%; }
 @media (max-width:760px) { [data-testid="stChatMessage"]:has(.user-author) { max-width:94%; } }
 
@@ -160,8 +161,8 @@ p,li { line-height:1.65; }
 .st-key-chat_composer [data-testid="stElementContainer"][data-stale="true"] {
  display:none;
 }
-.st-key-chat_composer:not(:has([data-testid="stElementContainer"][data-stale="false"] [data-testid="stTextInput"])),
-.st-key-chat_composer [data-testid="stVerticalBlockBorderWrapper"]:has(> div > .st-key-composer_input_row):not(:has([data-testid="stElementContainer"][data-stale="false"] [data-testid="stTextInput"])) {
+.st-key-chat_composer:not(:has([data-testid="stForm"] [data-testid="stElementContainer"][data-stale="false"] [data-testid="stTextArea"])),
+.st-key-chat_composer [data-testid="stVerticalBlockBorderWrapper"]:has(> div > .st-key-composer_input_row):not(:has([data-testid="stForm"] [data-testid="stElementContainer"][data-stale="false"] [data-testid="stTextArea"])) {
  display:none;
 }
 /* A drop target across the existing composer, without another upload button. */
@@ -241,11 +242,20 @@ p,li { line-height:1.65; }
 }
 .st-key-chat_composer [data-testid="stForm"] { position:relative; border:0; padding:0; background:transparent; }
 .st-key-chat_composer [data-testid="stForm"] [data-testid="stVerticalBlock"] { gap:0; }
-.st-key-chat_composer [data-testid="stTextInput"] input {
- background:var(--surface-raised); font-size:14px; padding:16px 92px 16px 8px; min-height:50px;
+.st-key-chat_composer [data-testid="stForm"] textarea {
+ background:var(--surface-raised); font-size:14px; line-height:20px;
+ padding:15px 92px 15px 8px; resize:none;
 }
-.st-key-chat_composer [data-testid="stTextInput"] [data-baseweb="input"] {
- border:0; background:transparent; box-shadow:none; min-height:50px;
+@supports (field-sizing: content) {
+ .st-key-chat_composer [data-testid="stForm"] textarea {
+  field-sizing:content; width:100%; height:auto; min-height:50px; max-height:160px;
+ }
+}
+.st-key-chat_composer [data-testid="stForm"] [data-testid="InputInstructions"] {
+ display:none;
+}
+.st-key-chat_composer [data-testid="stTextAreaRootElement"]:has(textarea[aria-label="Message"]) {
+ border:0; background:transparent; box-shadow:none;
 }
 .st-key-chat_composer [data-testid="stFormSubmitButton"] button {
  border:0; background:transparent; color:var(--composer-icon); width:40px; height:40px; min-height:40px; padding:0;

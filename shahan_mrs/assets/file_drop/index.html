@@ -49,10 +49,19 @@
   }catch(error){publish('error',{message:error.message});}
   finally{lock(false);}
  }
- function guard(e){if(busy&&e.key==='Enter'&&inside(e)){e.preventDefault();e.stopPropagation();}}
+ function handleEnter(e){
+  if(e.key!=='Enter'||!inside(e))return;
+  if(busy){e.preventDefault();e.stopPropagation();return;}
+  if(e.defaultPrevented||e.shiftKey||e.ctrlKey||e.metaKey||e.altKey||e.isComposing||e.keyCode===229)return;
+  const field=e.target.closest('textarea[aria-label="Message"]');
+  const submit=field?.closest('[data-testid="stForm"]')?.querySelector('[data-testid="stFormSubmitButton"] button');
+  if(!submit||submit.disabled)return;
+  e.preventDefault();
+  if(!e.repeat)submit.click();
+ }
  doc.addEventListener('dragover',over,true);doc.addEventListener('dragleave',leave,true);
  doc.addEventListener('drop',drop,true);doc.addEventListener('dragend',end,true);
- doc.addEventListener('keydown',guard,true);
+ doc.addEventListener('keydown',handleEnter,true);
  window.addEventListener('message',e=>{
   if(e.source!==window.parent||e.data?.type!=='streamlit:render')return;
   chatId=e.data.args.chat_id;disabled=!!e.data.args.disabled;remaining=e.data.args.remaining;maxBytes=e.data.args.max_bytes;
@@ -61,7 +70,7 @@
  window.addEventListener('beforeunload',()=>{
   disposed=true;highlight(false);lock(false);
   doc.removeEventListener('dragover',over,true);doc.removeEventListener('dragleave',leave,true);
-  doc.removeEventListener('drop',drop,true);doc.removeEventListener('keydown',guard,true);
+  doc.removeEventListener('drop',drop,true);doc.removeEventListener('keydown',handleEnter,true);
   doc.removeEventListener('dragend',end,true);
  });
  send('streamlit:componentReady',{apiVersion:1});send('streamlit:setFrameHeight',{height:0});

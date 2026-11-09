@@ -51,6 +51,7 @@ def chat_page(chat, data, version, landing=False):
         old_event_id = replace_last_turn(chat, data, predictor)
         remove_previous_analytics(old_event_id)
     pending_prompt = chat.pop('pending_prompt', None)
+    message_key = 'message_' + chat['id'] + chat.get('message_draft_id', '')
     animate_id = chat.pop('animate_message_id', None)
     if landing and chat['messages']:
         chat['messages'][-1].setdefault('id', uuid4().hex)
@@ -156,11 +157,11 @@ def chat_page(chat, data, version, landing=False):
                         voice_event = voice_input(chat['id'], disabled=bool(pending_prompt))
                     if accept_transcript(chat, voice_event):
                         st.rerun()
-                    with st.form('message_form_' + chat['id'], clear_on_submit=True, border=False):
-                        entered = st.text_input('Message', placeholder='Describe your symptoms or drop a file…',
-                                                key='message_' + chat['id'],
-                                                max_chars=2000, label_visibility='collapsed',
-                                                disabled=bool(pending_prompt))
+                    with st.form('message_form_' + chat['id'], border=False):
+                        entered = st.text_area('Message', placeholder='Describe your symptoms or drop a file…',
+                                               key=message_key,
+                                               max_chars=2000, height=68, label_visibility='collapsed',
+                                               disabled=bool(pending_prompt))
                         submitted = st.form_submit_button('Send', icon=':material/arrow_upward:',
                                                           help='Send message or files', disabled=bool(pending_prompt))
     prompt = retry_prompt or edited_prompt or st.session_state.pop('queued_prompt', None)
@@ -192,6 +193,8 @@ def chat_page(chat, data, version, landing=False):
         if sending_files:
             chat['draft_files'] = []
         user_message_id = uuid4().hex
+        if submitted:
+            chat['message_draft_id'] = user_message_id
         chat['messages'].append({'role': 'user', 'content': prompt, 'id': user_message_id,
                                  'state_before': state_before, 'file_only': file_only,
                                  'attachments': attached_names, 'attachment_reports': deepcopy(reports),

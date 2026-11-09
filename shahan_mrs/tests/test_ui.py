@@ -14,7 +14,7 @@ def click(at, label):
 
 
 def send(at, text):
-    next(field for field in at.text_input if field.label == 'Message').set_value(text)
+    next(field for field in at.text_area if field.label == 'Message').set_value(text)
     return click(at, 'Send')
 
 
@@ -30,6 +30,15 @@ class UITests(unittest.TestCase):
         at = AppTest.from_file('app.py', default_timeout=60).run()
         self.assertFalse(at.exception)
         return at
+
+    @patch('src.ui.chat.respond', return_value={'text': 'Received.', 'intent': 'general'})
+    def test_multiline_message_keeps_line_breaks(self, respond_fixture):
+        at = self.app()
+        message = 'First line\nSecond line'
+        send(at, message)
+        chat = at.session_state['chats'][at.session_state['active_chat']]
+        self.assertEqual(chat['messages'][0]['content'], message)
+        self.assertEqual(respond_fixture.call_args.args[0], message)
 
     @patch('src.ml.condition_model.predict', return_value=[
         {'condition': 'Common Cold', 'probability': .9},
@@ -377,7 +386,7 @@ class UITests(unittest.TestCase):
     def test_dropped_file_preserves_message_can_remove_and_send(self):
         at = self.app()
         key = at.session_state['active_chat']
-        next(field for field in at.text_input if field.label == 'Message').set_value('Explain the flagged values').run()
+        next(field for field in at.text_area if field.label == 'Message').set_value('Explain the flagged values').run()
         event = {'type': 'files', 'id': 'drop1', 'chat_id': key,
                  'files': [{'name': 'fictional-report.txt', 'content': base64.b64encode(
                      b'Fictional report: Hemoglobin 10.2 g/dL; sample range 12-16; LOW').decode()}]}
@@ -386,7 +395,7 @@ class UITests(unittest.TestCase):
             chat = at.session_state['chats'][key]
             self.assertEqual(len(chat['draft_files']), 1)
             self.assertEqual(len(chat['messages']), 0)
-            self.assertEqual(next(t for t in at.text_input if t.label == 'Message').value, 'Explain the flagged values')
+            self.assertEqual(next(t for t in at.text_area if t.label == 'Message').value, 'Explain the flagged values')
             click(at, 'Remove file')
             self.assertEqual(chat['draft_files'], [])
             self.assertEqual(len(chat['messages']), 0)
@@ -400,6 +409,19 @@ class UITests(unittest.TestCase):
         self.assertEqual(chat['messages'][-2]['attachments'], ['fictional-report.txt'])
         self.assertEqual(chat['draft_files'], [])
         self.assertFalse(at.exception)
+
+    def test_oversized_combined_voice_message_preserves_drafts(self):
+        at = self.app()
+        key = at.session_state['active_chat']
+        event = {'type': 'transcript', 'id': 'long-voice', 'text': 'y' * 1000}
+        with patch('src.browser.voice.voice_input', return_value=event):
+            at.run()
+            send(at, 'x' * 1100)
+            chat = at.session_state['chats'][key]
+            self.assertFalse(chat['messages'])
+            self.assertEqual(chat['voice_draft'], event['text'])
+            self.assertEqual(next(t for t in at.text_area if t.label == 'Message').value, 'x' * 1100)
+            self.assertTrue(any('2,000 characters' in warning.value for warning in at.warning))
 
     def test_retry_replaces_failed_general_answer(self):
         settings = {'MRS_LLM_BACKEND': 'openai', 'MRS_LLM_MODEL': 'test-model',

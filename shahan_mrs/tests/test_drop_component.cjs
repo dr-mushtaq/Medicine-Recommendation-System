@@ -4,7 +4,7 @@ const vm = require('node:vm');
 const assert = require('node:assert/strict');
 const script = fs.readFileSync('assets/file_drop/index.html', 'utf8').match(/<script>([\s\S]*?)<\/script>/)[1];
 function setup({remaining=3, disabled=false}={}) {
- const messages=[], listeners={}, windowListeners={}, classes=new Set(), button={disabled:false};
+ const messages=[], listeners={}, windowListeners={}, classes=new Set(), button={disabled:false, clicks:0, click(){this.clicks++;}};
  const composer={classList:{toggle(name,on){on?classes.add(name):classes.delete(name);}}};
  const document={querySelector(selector){return selector.includes('button')?button:composer;},
   addEventListener(name,fn){listeners[name]=fn;}, removeEventListener(name){delete listeners[name];}};
@@ -30,6 +30,15 @@ function setup({remaining=3, disabled=false}={}) {
  const disabled=setup({disabled:true});await disabled.listeners.drop(disabled.event([file]));assert.equal(disabled.values().length,0);
  const outside=setup();await outside.listeners.drop(outside.event([file],false));assert.equal(outside.values().length,0);
  const text=setup(), textDrop=text.event([],true,['text/plain']);await text.listeners.drop(textDrop);assert(!textDrop.prevented);
- test.windowListeners.beforeunload();assert(!test.listeners.drop);assert(!test.listeners.dragend);
+ const form={querySelector(){return test.button;}};
+ const textarea={closest(selector){return selector.includes('stForm')?form:textarea;}};
+ const key=(properties={})=>({...test.event([]),key:'Enter',target:textarea,...properties});
+ const newline=key({shiftKey:true});test.listeners.keydown(newline);assert(!newline.prevented);
+ const composing=key({isComposing:true});test.listeners.keydown(composing);assert(!composing.prevented);
+ assert.equal(test.button.clicks,0);
+ const submit=key();test.listeners.keydown(submit);assert(submit.prevented);assert.equal(test.button.clicks,1);
+ const repeat=key({repeat:true});test.listeners.keydown(repeat);assert(repeat.prevented);assert.equal(test.button.clicks,1);
+ test.button.disabled=true;test.listeners.keydown(key());assert.equal(test.button.clicks,1);
+ test.windowListeners.beforeunload();assert(!test.listeners.keydown);assert(!test.listeners.drop);assert(!test.listeners.dragend);
  console.log('File drop component: valid drop, highlight, limits, read failure, disabled/outside/text drops and cleanup passed.');
 })().catch(error=>{console.error(error);process.exitCode=1;});

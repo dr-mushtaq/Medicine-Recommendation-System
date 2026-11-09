@@ -52,6 +52,26 @@ class RoutingTests(unittest.TestCase):
         self.generate.assert_called_once()
         self.assertNotIn('new_report_turn', self.state)
 
+    def test_new_attachment_is_processed_with_a_greeting(self):
+        self.state['new_report_turn'] = True
+        self.say('hello')
+        self.generate.assert_called_once()
+        with patch('src.chatbot.general_answers.urlopen', side_effect=URLError('offline')):
+            self.state['new_report_turn'] = True
+            answer = answer_general_question('hello', self.state, self.data)
+        self.assertEqual(answer['intent'], 'report_summary_fallback')
+
+    def test_song_title_hello_is_not_a_greeting(self):
+        questions = ('who sing the song hello',
+                     'I just ask you a simple question who sing the song hello',
+                     'I have a quick question who sings the song hello')
+        with patch('src.ml.intent_model.classify_intent', return_value='greeting'):
+            for text in questions:
+                self.say(text)
+                self.assertEqual(self.generate.call_args.args[0], text)
+        self.assertEqual(self.generate.call_count, len(questions))
+        self.predict.assert_not_called()
+
     def test_unrelated_question_timeout_does_not_repeat_saved_report(self):
         with patch.dict(os.environ, {'MRS_LLM_BACKEND': 'ollama'}), patch(
                 'src.chatbot.general_answers.urlopen', side_effect=URLError('offline')):

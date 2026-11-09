@@ -11,6 +11,8 @@ def add_selected_files(chat, upload_key):
     uploads = st.session_state.get(upload_key, [])
     if not uploads:
         return
+    # Reset the picker after each batch so a rejected file cannot block the next selection.
+    chat['upload_version'] = chat.get('upload_version', 0) + 1
     from src.services.medical_files import read_report, MAX_FILES
     try:
         drafts = chat.get('draft_files', [])
@@ -18,7 +20,6 @@ def add_selected_files(chat, upload_key):
             raise ValueError('Send up to 3 files at a time. Remove a file before adding another.')
         reports = [dict(read_report(file.name, file.getvalue()), id=uuid4().hex) for file in uploads]
         chat['draft_files'] = drafts + reports
-        chat['upload_version'] = chat.get('upload_version', 0) + 1
         chat.pop('drop_error', None)
     except (ValueError, ImportError) as error:
         chat['drop_error'] = str(error)

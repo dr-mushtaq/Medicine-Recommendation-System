@@ -276,11 +276,11 @@ def _respond(text, state, data, predictor, profile=None, general_answer=None):
             sources=[source['url']], source_details=[source],
         )
     from src.chatbot.routing import social_reply, report_question
-    social = social_reply(text)
+    use_reports = report_question(text, state)
+    social = social_reply(text) if not use_reports else None
     if social:
         state['active_report_topic'] = False
         return _reply(social, intent='greeting')
-    use_reports = report_question(text, state)
     state['active_report_topic'] = use_reports
     if use_reports:
         # Reports never bypass urgent-headache, pregnancy-medicine or dose boundaries.
@@ -369,7 +369,7 @@ def _respond(text, state, data, predictor, profile=None, general_answer=None):
     if is_information_question(text) and not medicine_question:
         existing = context_reply(text, state, data, profile_has_context(context))
         explicit_result = re.search(r'\b(?:previous|last)\s+(?:result|match)|\b(?:result|match|prediction)\b', text, re.I)
-        if existing and (existing.get('intent') in {'summary', 'greeting', 'gratitude', 'report_help'} or
+        if existing and (existing.get('intent') in {'summary', 'report_help'} or
                          (existing.get('intent') == 'explain_match' and explicit_result)):
             return existing
         if not is_topic_followup(text):
