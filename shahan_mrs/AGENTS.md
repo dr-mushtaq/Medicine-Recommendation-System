@@ -1,6 +1,6 @@
 # Medicine Recommendation System — project memory
 
-Applies to this entire repository. This is an educational FYP, not a prescribing service.
+Applies to the `shahan_mrs` project. This is an educational FYP, not a prescribing service.
 
 ## Product behavior
 - Prioritize the latest message. A medicine name (e.g. Panadol Extra) is a product question; route to Qwen with exact source context, not an old symptom questionnaire.
@@ -22,6 +22,9 @@ Applies to this entire repository. This is an educational FYP, not a prescribing
 - Truncated Qwen reasoning must fall back to source information; never render partial reasoning as a final answer.
 
 ## Runtime and verification
+
+Run the commands below from `shahan_mrs`.
+
 - Local app: `.venv/bin/python -m streamlit run app.py` on port 8501.
 - General answers: local Ollama `qwen3:4b`, port 11434, unless provider settings override it. Model files alone are insufficient; Ollama must run.
 - File watching uses polling with rerun on save. Server config changes need a restart.

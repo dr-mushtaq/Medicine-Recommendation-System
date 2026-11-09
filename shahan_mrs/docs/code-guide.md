@@ -2,7 +2,7 @@
 
 Start with [the teacher guide](teacher-guide.md) for a walkthrough organized around
 the ML lifecycle. `app.py` launches the Streamlit interface; it does not train models.
-Run scripts and tests from the repository root.
+Run scripts and tests from the `shahan_mrs` folder.
 
 ## Data preparation and loading
 

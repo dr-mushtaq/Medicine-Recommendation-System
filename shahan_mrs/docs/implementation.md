@@ -4,6 +4,8 @@ Streamlit chatbot for health information and symptom guidance. A MiniLM classifi
 supports symptom follow-ups; Qwen answers informational questions with optional
 source-linked reference notes. Condition matches are not clinically validated diagnoses.
 
+Run the commands below from the `shahan_mrs` folder.
+
 ```bash
 source .venv/bin/activate
 streamlit run app.py

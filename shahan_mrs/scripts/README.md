@@ -1,6 +1,6 @@
 # ML workflow commands
 
-Run these commands from the repository root with the project's virtual environment
+Run these commands from the `shahan_mrs` folder with the project's virtual environment
 active. The numbered sections describe the lifecycle; they are not instructions to
 rerun every stage whenever you start the app.
 
@@ -13,7 +13,7 @@ Changing prepared data can invalidate saved model fingerprints and require retra
 ## 2. Audit data
 
 - `python scripts/audit_data.py`: check the condition dataset.
-- `python scripts/audit_health_library.py`: check reference-library records.
+- `python -m scripts.audit_health_library`: check reference-library records.
 - `python scripts/audit_regional_data.py`: check separate research cohorts.
 
 ## 3. Download the pretrained encoder
