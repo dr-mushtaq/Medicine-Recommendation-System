@@ -3,6 +3,18 @@ import logging
 import re
 
 
+SEVERITY_QUESTION = 'How severe is it right now on a scale of 1–10?'
+SEVERITY_SCALE = re.compile(
+    r'\b(?:scale\s+(?:of\s+|from\s+)?1\s*(?:[-–—]|to)\s*10|'
+    r'(?:rate|sever\w*)\b[^.!?\n]{0,100}\b1\s*(?:[-–—]|to)\s*10)\b',
+    re.I,
+)
+
+
+def asks_severity_rating(text):
+    return bool(SEVERITY_SCALE.search(text))
+
+
 def remember_details(text, state):
     details = state.setdefault('details', {})
     duration = re.search(r'\b(?:for\s+(?:the\s+)?(?:last\s+)?|since\s+|started\s+|began\s+)([^.!?;,]{1,55})', text, re.I)

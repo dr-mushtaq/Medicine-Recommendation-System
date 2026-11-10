@@ -2,6 +2,8 @@ import unittest
 import base64
 import os
 import tempfile
+from concurrent.futures import wait
+from threading import Event
 from urllib.error import HTTPError
 from unittest.mock import Mock
 from unittest.mock import patch
@@ -10,6 +12,13 @@ from streamlit.testing.v1 import AppTest
 
 def click(at, label):
     next(b for b in at.button if b.label == label).click().run()
+    active = at.session_state['active_chat']
+    future = at.session_state.filtered_state.get('response_jobs', {}).get(active)
+    if future is not None:
+        if wait([future], timeout=60).not_done:
+            raise TimeoutError('Response did not finish')
+        # Background refreshes carry no new widget events.
+        at._run()
     return at
 
 
@@ -31,7 +40,7 @@ class UITests(unittest.TestCase):
         self.assertFalse(at.exception)
         return at
 
-    @patch('src.ui.chat.respond', return_value={'text': 'Received.', 'intent': 'general'})
+    @patch('src.ui.generation.respond', return_value={'text': 'Received.', 'intent': 'general'})
     def test_multiline_message_keeps_line_breaks(self, respond_fixture):
         at = self.app()
         message = 'First line\nSecond line'
@@ -77,6 +86,55 @@ class UITests(unittest.TestCase):
         at.button(key='open_' + first).click().run()
         self.assertEqual(at.session_state['active_chat'], first)
         self.assertEqual(len(at.session_state['chats'][first]['messages']), 2)
+
+    def test_response_continues_across_chat_and_page_switches(self):
+        release = Event()
+        started = Event()
+
+        def respond_in_background(prompt, state, data, predictor, profile):
+            if prompt == 'First question':
+                started.set()
+                if not release.wait(timeout=30):
+                    raise TimeoutError('Test did not release the first response')
+                state['details']['duration'] = 'since yesterday'
+            return {'text': f'Answer to {prompt}', 'intent': 'general'}
+
+        with patch('src.ui.generation.respond', side_effect=respond_in_background) as responder:
+            at = self.app()
+            first = at.session_state['active_chat']
+            try:
+                next(t for t in at.text_area if t.label == 'Message').set_value('First question')
+                next(b for b in at.button if b.label == 'Send').click().run()
+                self.assertTrue(started.wait(timeout=5))
+                self.assertTrue(any(c.value == 'Preparing your response…' for c in at.caption))
+                chat = at.session_state['chats'][first]
+                self.assertEqual(chat['pending_prompt'], 'First question')
+                self.assertTrue(any(getattr(block.proto, 'id', '').endswith('preparing_' + first)
+                                    for block in at.get('vertical')))
+                click(at, 'New conversation')
+                second = at.session_state['active_chat']
+                self.assertNotEqual(second, first)
+                send(at, 'Second question')
+                self.assertEqual(at.session_state['chats'][second]['messages'][-1]['content'],
+                                 'Answer to Second question')
+                self.assertIn('pending_prompt', chat)
+                click(at, 'About & sources')
+                self.assertEqual(at.session_state['navigation'], 'About')
+                future = at.session_state['response_jobs'][first]
+            finally:
+                release.set()
+            self.assertFalse(wait([future], timeout=5).not_done)
+            at._run()
+            self.assertEqual(at.session_state['navigation'], 'About')
+            self.assertNotIn('pending_prompt', chat)
+            self.assertFalse(any(getattr(block.proto, 'id', '').endswith('preparing_' + first)
+                                 for block in at.get('vertical')))
+            self.assertEqual(chat['state']['details']['duration'], 'since yesterday')
+            at.button(key='open_' + first).click().run()
+            self.assertEqual([m['content'] for m in chat['messages']], ['First question', 'Answer to First question'])
+            self.assertFalse(any(c.value == 'Preparing your response…' for c in at.caption))
+            self.assertEqual(responder.call_count, 2)
+            self.assertFalse(at.exception)
 
     def test_clear_saved_conversations_resets_session(self):
         at = self.app()
@@ -171,6 +229,29 @@ class UITests(unittest.TestCase):
         self.assertEqual(len(at.session_state['chats'][key]['messages']), 4)
         self.assertFalse(any(r.label == 'How long have you had these symptoms?' for r in at.radio))
         self.assertFalse(at.exception)
+
+    @patch('src.chatbot.general_answers.answer_general_question', return_value={
+        'text': 'How severe is it right now? (Scale of 1–10, where 1 is mild and 10 is very severe)',
+        'predictions': [], 'intent': 'general_question',
+    })
+    def test_severity_rating_submits_from_assistant_message(self, general_answer):
+        at = self.app()
+        send(at, 'i feel migrain from last night')
+        key = at.session_state['active_chat']
+        rating = next(r for r in at.radio if r.label == 'Select your severity rating')
+        self.assertEqual(rating.options, [str(n) for n in range(1, 11)])
+        self.assertIsNone(rating.value)
+        self.assertTrue(next(b for b in at.button if b.label == 'Submit rating').disabled)
+        rating.set_value(5).run()
+        self.assertEqual(len(at.session_state['chats'][key]['messages']), 2)
+        click(at, 'Submit rating')
+        chat = at.session_state['chats'][key]
+        self.assertEqual(chat['state']['details']['severity'], '5/10')
+        self.assertEqual(chat['messages'][-2]['content'], 'Severity: 5/10')
+        self.assertEqual(len(chat['messages']), 4)
+        self.assertFalse(any(r.label == 'Select your severity rating' for r in at.radio))
+        self.assertFalse(at.exception)
+        general_answer.assert_called_once()
 
     def test_duration_other_has_free_text_input(self):
         at = self.app()
@@ -400,7 +481,7 @@ class UITests(unittest.TestCase):
             self.assertEqual(chat['draft_files'], [])
             self.assertEqual(len(chat['messages']), 0)
         event['id'] = 'drop2'
-        with patch('src.browser.file_drop.composer_drop', return_value=event), patch('src.ui.chat.respond', return_value={
+        with patch('src.browser.file_drop.composer_drop', return_value=event), patch('src.ui.generation.respond', return_value={
                 'text': 'This fictional report flags hemoglobin as low.', 'intent': 'general'}):
             at.run()
             click(at, 'Send')

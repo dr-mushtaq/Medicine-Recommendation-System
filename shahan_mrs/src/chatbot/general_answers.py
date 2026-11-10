@@ -196,7 +196,8 @@ def answer_general_question(question, state, data):
         'and vague reassurance. Never promise certainty or satisfaction. For general information questions, '
         'provide the relevant answer and next steps without an unnecessary "Would you like" follow-up. '
         'A medicine name alone requests information about that exact product and variant. Explain its uses and relevant warnings; do not restart earlier symptom questions or ask routine profile questions unless personal suitability is requested. If the user describes a feeling or symptom, acknowledge it and ask one useful '
-        'clarifying question about timing, severity, or other symptoms. '
+        'clarifying question about timing, severity, or other symptoms. For a numeric severity rating, use '
+        'the standalone token [SEVERITY_SCALE] in place of the entire question. The app shows the rating picker. '
         'Do not diagnose the user, infer a disease from symptoms, recommend a medicine, '
         'give doses, or claim to have checked personal safety. If urgent symptoms are described, advise urgent '
         'medical assessment. The source-linked reference notes below are the only source material supplied to you. '
@@ -328,6 +329,8 @@ def answer_general_question(question, state, data):
         result = fallback('source_correction', retryable=False)
         result['text'] = back_guidance[0]['description'] + '\n\nWhere in your back do you feel the pain, and how severe is it?'
         return result
+    from src.chatbot.conversation import SEVERITY_QUESTION
+    answer = answer.replace('[SEVERITY_SCALE]', SEVERITY_QUESTION)
     sources = list(dict.fromkeys(item['source'] for item in passages))
     source_details = [source for record in records for source in record.get('sources', [])
                       if source['url'] in sources]

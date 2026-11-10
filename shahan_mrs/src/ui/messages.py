@@ -5,6 +5,7 @@ from pathlib import Path
 
 import streamlit as st
 
+from src.chatbot.conversation import asks_severity_rating
 from src.chatbot.dialogue import profile_has_context
 from .resources import ASSETS
 from .state import begin_edit, queue_prompt, queue_retry
@@ -66,13 +67,25 @@ def duration_choices(chat, message):
 
 
 
+def severity_choices(chat, message):
+    key = 'severity_' + chat['id'] + '_' + message['id']
+    with st.container(key='severity_choices'):
+        selected = st.radio('Select your severity rating', range(1, 11),
+                            index=None, horizontal=True, key=key)
+        st.caption('1 is mild · 10 is very severe')
+        answer = f'Severity: {selected}/10' if selected is not None else ''
+        st.button('Submit rating', key=key + '_submit', type='primary', disabled=not answer,
+                  on_click=queue_prompt, args=(answer,))
+
+
+
 def render_message(message, chat, data, editable=False, latest=False, animate=False):
     is_user = message['role'] == 'user'
     context = {**chat['state'].get('context', {}), **chat.get('profile', {})}
     if not is_user and message.get('relief_text') and (profile_has_context(context) or chat['state'].get('urgent')):
         message = dict(message, content=message['content'].split('**Medicine information for learning**')[0].rstrip(),
                        relief_text=None, medicine_references=[], medicine_withheld=True)
-    duration_slot = None
+    followup_slot = None
     with st.chat_message(message['role'], avatar=':material/person:' if is_user else str(ASSETS / 'logo.svg')):
         author = 'You' if is_user else 'MRS AI'
         time = datetime.fromisoformat(message['timestamp']).astimezone().strftime('%H:%M') if message.get('timestamp') else ''
@@ -140,15 +153,19 @@ def render_message(message, chat, data, editable=False, latest=False, animate=Fa
         else:
             st.markdown(message['content'])
             render_sources(message)
-        if (latest and message.get('uncertain') and chat['state'].get('pending_detail') == 'duration'
-                and not chat.get('editing_last') and not chat['state']['urgent']):
-            duration_slot = st.empty()
-            with duration_slot.container():
-                duration_choices(chat, message)
+        if latest and not chat.get('editing_last') and not chat['state']['urgent']:
+            if asks_severity_rating(message['content']):
+                followup_slot = st.empty()
+                with followup_slot.container():
+                    severity_choices(chat, message)
+            elif message.get('uncertain') and chat['state'].get('pending_detail') == 'duration':
+                followup_slot = st.empty()
+                with followup_slot.container():
+                    duration_choices(chat, message)
         if message.get('relief_text') and not message.get('condition') and message.get('result_ready'):
             st.markdown('**Medicine information for learning**\n\n' + message['relief_text'])
         if latest and message.get('retryable'):
             st.button('Retry answer', icon=':material/refresh:', key='retry_' + chat['id'],
                       on_click=queue_retry)
-    return duration_slot
+    return followup_slot
 

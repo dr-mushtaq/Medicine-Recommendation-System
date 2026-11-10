@@ -1,4 +1,5 @@
 """Shared sidebar, page header and conversation welcome screen."""
+from contextlib import nullcontext
 from datetime import datetime, timezone
 from html import escape
 
@@ -21,15 +22,20 @@ def sidebar(chat):
                 st.caption('Your conversations will appear here. Start with how you’re feeling.')
             last_group = None
             today = datetime.now(timezone.utc).date()
-            for item in chats[:12]:
+            for index, item in enumerate(chats):
+                preparing = item.get('pending_prompt')
+                if index >= 12 and not preparing:
+                    continue
                 age = (today - datetime.fromisoformat(item['created_at']).date()).days
                 group = 'Today' if age == 0 else ('Previous 7 days' if age < 7 else 'Earlier')
                 if group != last_group:
                     st.markdown(f'<div class="eyebrow">{group}</div>', unsafe_allow_html=True)
                     last_group = group
-                st.button(item['title'][:44], key='open_' + item['id'], icon=':material/chat_bubble_outline:',
-                          type='primary' if item['id'] == chat['id'] and st.session_state.navigation == 'Chat' else 'tertiary',
-                          on_click=choose_chat, args=(item['id'],), use_container_width=True)
+                row = st.container(key='preparing_' + item['id']) if preparing else nullcontext()
+                with row:
+                    st.button(item['title'][:44], key='open_' + item['id'], icon=':material/chat_bubble_outline:',
+                              type='primary' if item['id'] == chat['id'] and st.session_state.navigation == 'Chat' else 'tertiary',
+                              on_click=choose_chat, args=(item['id'],), use_container_width=True)
         with st.container(key='sidebar_links'):
             for label, page, icon in [('Health context', 'Health context', 'favorite'),
                                       ('Conversation history', 'History', 'history'),

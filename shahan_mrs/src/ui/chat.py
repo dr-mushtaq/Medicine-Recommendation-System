@@ -8,12 +8,10 @@ from uuid import uuid4
 import streamlit as st
 
 from src.browser.history import scroll_to_message
-from src.data.loading import ARTIFACT_DIR
-from src.chatbot.dialogue import respond
 from .composer import attachment_menu, draft_file_cards, remove_voice_draft
+from .generation import predict_for_chat, start_response
 from .layout import page_header, welcome
 from .messages import render_message
-from .resources import cached_models, model_metrics
 from .state import cancel_edit, queue_prompt
 
 
@@ -38,19 +36,16 @@ def chat_page(chat, data, version, landing=False):
             chat['state']['medical_files'] = [report for report in old_reports if report['name'] in sent_names]
         chat['composer_files_v2'] = True
     def predictor(symptoms):
-        from src.ml.condition_model import predict
-        model_metrics(version)
-        bundle = cached_models(version, (ARTIFACT_DIR / 'metrics.json').stat().st_mtime_ns)
-        return predict(bundle, symptoms, chat['model'])
+        return predict_for_chat(symptoms, version, chat['model'])
 
+    pending_prompt = chat.get('pending_prompt')
     retry_prompt = None
-    if (st.session_state.pop('retry_last', False) and len(chat['messages']) >= 2
+    if (st.session_state.pop('retry_last', False) and not pending_prompt and len(chat['messages']) >= 2
             and chat['messages'][-1].get('retryable')):
         from src.chatbot.editing import replace_last_turn
         retry_prompt = chat['messages'][-2]['content']
         old_event_id = replace_last_turn(chat, data, predictor)
         remove_previous_analytics(old_event_id)
-    pending_prompt = chat.pop('pending_prompt', None)
     message_key = 'message_' + chat['id'] + chat.get('message_draft_id', '')
     animate_id = chat.pop('animate_message_id', None)
     if landing and chat['messages']:
@@ -62,14 +57,16 @@ def chat_page(chat, data, version, landing=False):
         else:
             st.markdown('<div class="conversation-heading"><h1>Let’s understand how you’re feeling</h1>'
                         '<p>You can add details or correct a symptom at any time.</p></div>', unsafe_allow_html=True)
-        duration_slots = []
+        followup_slots = []
         for index, message in enumerate(chat['messages']):
-            editable = (index == len(chat['messages']) - 2 and message['role'] == 'user')
-            duration_slot = render_message(message, chat, data, editable=editable,
+            editable = not pending_prompt and index == len(chat['messages']) - 2 and message['role'] == 'user'
+            followup_slot = render_message(message, chat, data, editable=editable,
                            latest=index == len(chat['messages']) - 1,
                            animate=bool(animate_id and message.get('id') == animate_id))
-            if duration_slot is not None:
-                duration_slots.append(duration_slot)
+            if followup_slot is not None:
+                followup_slots.append(followup_slot)
+        if pending_prompt:
+            st.caption('Preparing your response…')
         scroll_key = 'chat_scroll_' + chat['id']
         if animate_id:
             st.session_state[scroll_key] = ('chat-message-' + animate_id, True, uuid4().hex)
@@ -109,7 +106,7 @@ def chat_page(chat, data, version, landing=False):
                 st.session_state.pop('queued_prompt', None)
                 edited_prompt = revised.strip()
                 remove_previous_analytics(old_event_id)
-    if not chat.get('editing_last') and chat['state']['pending'] and not chat['state']['urgent']:
+    if not pending_prompt and not chat.get('editing_last') and chat['state']['pending'] and not chat['state']['urgent']:
         with st.container(key='followup'):
             for col, (label, prompt) in zip(st.columns(3), [('Yes, I do', 'yes'), ('No, I don’t', 'no'), ('Show matches', 'show results')]):
                 col.button(label, on_click=queue_prompt, args=(prompt,), use_container_width=True)
@@ -176,8 +173,9 @@ def chat_page(chat, data, version, landing=False):
         file_only = not combined and bool(sending_files)
         prompt = combined or ('Please summarize and explain my attached medical reports.' if sending_files else None)
     if prompt and not pending_prompt:
-        for duration_slot in duration_slots:
-            duration_slot.empty()
+        jobs = st.session_state.setdefault('response_jobs', {})
+        for followup_slot in followup_slots:
+            followup_slot.empty()
         if submitted:
             chat.pop('voice_draft', None)
         replacement = chat.pop('replacement_turn', {}) if (retry_prompt or edited_prompt) else {}
@@ -201,39 +199,6 @@ def chat_page(chat, data, version, landing=False):
                                  'timestamp': datetime.now(timezone.utc).isoformat()})
         if chat['title'] == 'New conversation':
             chat['title'] = attached_names[0] if file_only else prompt[:64]
-        chat['pending_prompt'] = prompt
         chat['animate_message_id'] = user_message_id
+        start_response(jobs, chat, prompt, data, version)
         st.rerun()
-    if pending_prompt:
-        prompt = pending_prompt
-        try:
-            with st.spinner('Preparing your response…'):
-                # Include existing saved turns too, not just conversations started
-                # after contextual answers were introduced.
-                chat['state']['recent_turns'] = [
-                    {'role': m['role'], 'content': m['content'][:2000]}
-                    for m in chat['messages'][:-1][-10:] if m['role'] in {'user', 'assistant'}]
-                chat['state']['new_report_turn'] = bool(chat['messages'][-1].get('attachment_reports'))
-                answer = respond(prompt, chat['state'], data, predictor, chat['profile'])
-            message = {
-                **answer,
-                'role': 'assistant', 'content': answer['text'],
-                'symptoms': list(chat['state']['symptoms']),
-                'model': chat['model'], 'timestamp': datetime.now(timezone.utc).isoformat(),
-            }
-        except (FileNotFoundError, ValueError, OSError, ImportError):
-            logging.exception('Unable to prepare symptom response')
-            message = {'role': 'assistant', 'content': 'I’m unable to review your symptoms right now. '
-                       'Please try again later. If you feel very unwell, seek medical advice.'}
-        message['id'] = uuid4().hex
-        chat['animate_message_id'] = message['id']
-        chat['messages'].append(message)
-        if 'text' in message:
-            from src.services.analytics import record_event
-            try:
-                record_event(st.session_state.analytics_session, chat['id'], message, data)
-            except (OSError, sqlite3.Error):
-                logging.exception('Unable to save anonymous analytics event')
-                st.session_state.analytics_write_failed = True
-        st.rerun()
-

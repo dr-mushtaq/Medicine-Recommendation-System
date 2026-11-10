@@ -27,6 +27,10 @@ p,li { line-height:1.65; }
 .st-key-recent_chats [data-testid="stButton"] button, .st-key-sidebar_links [data-testid="stButton"] button { text-align:left; justify-content:flex-start; border:0; background:transparent; font-size:13px; }
 .st-key-recent_chats [data-testid="stButton"] button[kind="primary"] { background:var(--surface-raised); color:var(--teal); box-shadow:0 2px 9px transparent; }
 .st-key-recent_chats [data-testid="stButton"] button p { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:190px; }
+.st-key-recent_chats [class*="st-key-preparing_"] button [data-testid="stMarkdownContainer"] { min-width:0; }
+.st-key-recent_chats [class*="st-key-preparing_"] button::after {
+  content:""; flex:0 0 7px; height:7px; margin-left:auto; border-radius:50%; background:var(--teal);
+}
 .st-key-sidebar_links { border-top:1px solid var(--line); margin-top:28px; padding-top:17px; }
 .sidebar-note { font-size:11px; color:var(--muted); line-height:1.6; padding:24px 8px 0; }
 .topline { display:flex; align-items:center; gap:10px; min-height:44px; font-size:14px; }

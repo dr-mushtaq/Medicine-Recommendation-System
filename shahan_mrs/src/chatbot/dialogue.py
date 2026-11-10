@@ -236,6 +236,15 @@ def _respond(text, state, data, predictor, profile=None, general_answer=None):
             'This conversation contains an urgent symptom report. Please seek urgent medical assessment; medicine suggestions remain paused.',
             urgent=True,
         )
+    rating = re.fullmatch(r'Severity: (10|[1-9])/10', text.strip(), re.I)
+    recent_turns = state.get('recent_turns', [])
+    if rating and recent_turns and recent_turns[-1]['role'] == 'assistant':
+        from src.chatbot.conversation import asks_severity_rating
+        if asks_severity_rating(recent_turns[-1]['content']):
+            score = f'{rating[1]}/10'
+            state['details']['severity'] = score
+            return _reply(f'I’ve recorded your severity rating of **{score}**. You can add any other symptoms or changes.',
+                          intent='severity')
     headache_mention = re.search(r'\b(?:headache|head pain|pain in (?:my |the )?head)\b', text, re.I)
     if SEX_HEADACHE.search(text) and headache_mention and not negated(text, headache_mention.start()):
         if 'headache' not in state['symptoms']:

@@ -1,5 +1,6 @@
 """Cached resources, model metadata and shared interface assets."""
 import json
+from functools import lru_cache
 
 import streamlit as st
 
@@ -32,7 +33,7 @@ def cached_data(version):
 
 
 
-@st.cache_resource
+@lru_cache(maxsize=1)
 def cached_models(data_version, model_version):
     from src.ml.condition_model import load_bundle
     return load_bundle()
