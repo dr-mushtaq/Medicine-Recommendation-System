@@ -1,0 +1,53 @@
+{
+  "verified_on": "2026-11-05",
+  "code_sha256": "ec243a112a8f1e2315ed6a9b0800aac432bae838ff2e8bbea9cc6274aaeb646c",
+  "python_regression": {
+    "run": 232,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "details": []
+  },
+  "browser_components": {
+    "passed": 3,
+    "total": 3
+  },
+  "live_chat": {
+    "passed": 18,
+    "total": 18,
+    "synthetic_messages": 24,
+    "source_fallbacks": [
+      {
+        "case": "cf_day",
+        "status": "connection"
+      },
+      {
+        "case": "regular_cf",
+        "status": "connection"
+      },
+      {
+        "case": "generic_medicine",
+        "status": "truncated_response"
+      }
+    ]
+  },
+  "structural_data_audits": {
+    "passed": 3,
+    "total": 3
+  },
+  "executed_checks_pass_rate": "100%",
+  "limitations": [
+    "Pass rate applies only to the executed checks; exhaustive input coverage and medical accuracy are not established.",
+    "Two live replies used references after local Qwen timeouts; one used references after truncated output.",
+    "Legacy disease-to-medicine associations remain unvalidated and are not used to automatically select symptom relief."
+  ],
+  "evidence": [
+    "regression-results.json",
+    "regression.log",
+    "live-chat-results.json",
+    "live-chat.log",
+    "live-chat-rerun.log",
+    "data-audits.json",
+    "ui-symptom-relief.png"
+  ]
+}

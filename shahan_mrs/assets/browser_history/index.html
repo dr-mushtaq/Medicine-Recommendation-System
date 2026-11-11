@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Conversation storage</title></head>
+<body style="margin:0;padding:0">
+<script>
+(() => {
+  const send = (type, details = {}) => window.parent.postMessage(
+    {isStreamlitMessage: true, type, ...details}, '*'
+  );
+  let lastWrite = '', lastScrollRequest = '', stopReveal = () => {};
+  let observedComposer;
+  // Measure the pane without containment, which would trap fixed controls in its scroll area.
+  const host = window.parent;
+  let observedMain;
+  const alignComposer = () => {
+    const main = host.document.querySelector('[data-testid="stMain"]');
+    if (!main) return;
+    if (main !== observedMain) {
+      paneObserver.disconnect();
+      observedComposer = undefined;
+      paneObserver.observe(main);
+      observedMain = main;
+    }
+    const composer = [...host.document.querySelectorAll('.st-key-chat_composer')]
+      .find(node => node.getBoundingClientRect().height > 0 && host.getComputedStyle(node).display !== 'none');
+    if (composer !== observedComposer) {
+      if (observedComposer) paneObserver.unobserve(observedComposer);
+      if (composer) paneObserver.observe(composer);
+      observedComposer = composer;
+    }
+    const bounds = main.getBoundingClientRect();
+    const root = host.document.documentElement;
+    const composerBounds = composer?.getBoundingClientRect();
+    const clearance = composerBounds?.height ? host.innerHeight - composerBounds.top + 32 : 130;
+    root.style.setProperty('--chat-bottom-gap', `${Math.max(130, clearance)}px`);
+    root.style.setProperty('--chat-main-width', `${bounds.width}px`);
+    root.style.setProperty('--chat-main-right', `${Math.max(0, host.innerWidth - bounds.right)}px`);
+  };
+  const paneObserver = new host.ResizeObserver(alignComposer);
+  host.addEventListener('resize', alignComposer);
+  window.addEventListener('pagehide', () => {
+    stopReveal();
+    paneObserver.disconnect();
+    host.removeEventListener('resize', alignComposer);
+  });
+
+  window.addEventListener('message', (event) => {
+    if (event.source !== window.parent || event.data?.type !== 'streamlit:render') return;
+    alignComposer();
+    // Keep custom chat surfaces in step with Streamlit's selected native theme.
+    const theme = event.data.theme;
+    if (theme) {
+      const root = window.parent.document.documentElement;
+      for (const [property, key] of [['--mrs-background','backgroundColor'],
+          ['--mrs-secondary','secondaryBackgroundColor'], ['--mrs-text','textColor'], ['--mrs-primary','primaryColor']]) {
+        if (theme[key]) root.style.setProperty(property, theme[key]);
+      }
+      const dark = theme.base === 'dark' || /^#(?:0e1117|262730)$/i.test(theme.backgroundColor || '');
+      root.style.setProperty('--composer-icon', dark ? '#4ade80' : '#16803d');
+      root.style.setProperty('--danger', dark ? '#ff6b6b' : '#c62828');
+    }
+    const {action, storage_key: key, payload} = event.data.args || {};
+    try {
+      if (action === 'scroll') {
+        const request = event.data.args.request_id || event.data.args.anchor;
+        if (request === lastScrollRequest) return;
+        stopReveal();
+        lastScrollRequest = request;
+        const anchor = event.data.args.anchor;
+        if (!/^chat-message-[a-f0-9]{32}$/.test(anchor || '')) return;
+        const doc = window.parent.document;
+        let attempts = 0, stable = 0, previous = '', cancelled = false;
+        const cancel = () => { cancelled = true; cleanup(); };
+        stopReveal = cancel;
+        const cleanup = () => {
+          doc.removeEventListener('wheel', cancel, true);
+          doc.removeEventListener('touchstart', cancel, true);
+        };
+        doc.addEventListener('wheel', cancel, {capture:true, passive:true});
+        doc.addEventListener('touchstart', cancel, {capture:true, passive:true});
+        const reveal = () => {
+          if (cancelled) return;
+          alignComposer();
+          const element = doc.getElementById(anchor);
+          const message = element?.closest('[data-testid="stChatMessage"]');
+          const main = doc.querySelector('[data-testid="stMain"]');
+          const composer = observedComposer;
+          if (message && main) {
+            const composerBounds = composer?.getBoundingClientRect();
+            const bottom = composerBounds?.height ? composerBounds.top - 24 : host.innerHeight - 100;
+            // Scroll to the actual end, including follow-up choices after the reply.
+            // Aligning only the message edge could leave newer controls below view
+            // or pull the conversation upwards while Streamlit rerendered it.
+            const signature = `${message.offsetHeight}:${main.scrollHeight}:${main.clientHeight}:${bottom}`;
+            stable = signature === previous ? stable + 1 : 0;
+            previous = signature;
+            // Recheck while Streamlit hydrates the composer and restores saved history.
+            main.scrollTo({top: main.scrollHeight, behavior: 'auto'});
+            if (composerBounds?.height && stable >= 30 && attempts >= 90) { cleanup(); return; }
+          }
+          if (++attempts < 180) host.requestAnimationFrame(reveal);
+          else cleanup();
+        };
+        host.requestAnimationFrame(reveal);
+      } else if (action === 'read') {
+        const raw = window.localStorage.getItem(key);
+        send('streamlit:setComponentValue', {
+          dataType: 'json', value: {status: 'loaded', data: raw ? JSON.parse(raw) : null}
+        });
+      } else if (action === 'clear') {
+        window.localStorage.removeItem(key);
+        lastWrite = '';
+      } else if (action === 'write') {
+        const serialized = JSON.stringify(payload);
+        if (serialized !== lastWrite) {
+          window.localStorage.setItem(key, serialized);
+          lastWrite = serialized;
+        }
+      }
+    } catch (error) {
+      send('streamlit:setComponentValue', {
+        dataType: 'json', value: {status: 'error', reason: error?.name || 'StorageError'}
+      });
+    }
+  });
+  send('streamlit:componentReady', {apiVersion: 1});
+  send('streamlit:setFrameHeight', {height: 0});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+%PDF-1.3
+%‚„œ”
+1 0 obj
+<<
+/Producer (pypdf)
+>>
+endobj
+2 0 obj
+<<
+/Type /Pages
+/Count 1
+/Kids [ 4 0 R ]
+>>
+endobj
+3 0 obj
+<<
+/Type /Catalog
+/Pages 2 0 R
+>>
+endobj
+4 0 obj
+<<
+/Type /Page
+/Resources <<
+/Font <<
+/F1 <<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica
+>>
+>>
+>>
+/MediaBox [ 0.0 0.0 612 792 ]
+/Parent 2 0 R
+/Contents 5 0 R
+>>
+endobj
+5 0 obj
+<<
+/Length 800
+>>
+stream
+BT /F1 11 Tf 48 750 Td 15 TL (MRS AI upload testing | Fictional data only) Tj T* (FICTIONAL TEST DOCUMENT) Tj T* (Sample laboratory report 5) Tj T* (Invented information. Not a real medical record.) Tj T* (Sample ID: DEMO-005) Tj T* (Person: Fictional adult, age 41) Tj T* (Report date: 07 September 2026) Tj T* (Sample type: Blood) Tj T* (Reported symptoms: Upper abdominal discomfort for five days) Tj T* () Tj T* (Test results) Tj T* (ALT 96 U/L  Sample range 7 - 40  HIGH) Tj T* (AST 78 U/L  Sample range 10 - 35  HIGH) Tj T* (Bilirubin 1.9 mg/dL  Sample range 0.2 - 1.2  HIGH) Tj T* (Hemoglobin 15.0 g/dL  Sample range 12.0 - 16.0  IN RANGE) Tj T* () Tj T* (All values above are illustrative test fixtures.) Tj T* (They are not validated reference intervals and must not be used for care.) Tj ET
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000015 00000 n 
+0000000054 00000 n 
+0000000113 00000 n 
+0000000162 00000 n 
+0000000343 00000 n 
+trailer
+<<
+/Size 6
+/Root 3 0 R
+/Info 1 0 R
+>>
+startxref
+1194
+%%EOF

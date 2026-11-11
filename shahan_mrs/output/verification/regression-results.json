@@ -1,0 +1,24 @@
+{
+  "mode": "deterministic regression; unmocked provider/web calls forced offline",
+  "python": {
+    "run": 232,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "details": []
+  },
+  "components": {
+    "test_chat_scroll.cjs": {
+      "passed": true,
+      "output": "Chat scroll checks passed\n"
+    },
+    "test_drop_component.cjs": {
+      "passed": true,
+      "output": "File drop component: valid drop, highlight, limits, read failure, disabled/outside/text drops and cleanup passed.\n"
+    },
+    "test_voice_component.cjs": {
+      "passed": true,
+      "output": "Voice component: stop, cancel, permission denial, unsupported browser and empty speech passed.\n"
+    }
+  }
+}

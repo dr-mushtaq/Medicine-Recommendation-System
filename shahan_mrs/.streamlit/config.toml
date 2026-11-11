@@ -1,0 +1,9 @@
+[server]
+fileWatcherType = "poll"
+runOnSave = true
+
+[browser]
+gatherUsageStats = false
+
+[theme]
+base = "dark"

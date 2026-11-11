@@ -1,0 +1,40 @@
+/Users/sf033/Documents/Github/Medicine-Recommendation-System/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+RUN greeting
+PASS greeting []
+RUN headache_relief
+PASS headache_relief []
+RUN fever_relief
+PASS fever_relief []
+RUN diarrhoea_relief
+PASS diarrhoea_relief []
+RUN constipation_relief
+PASS constipation_relief []
+RUN user_conversation
+PASS user_conversation []
+RUN extra_topic_switch
+PASS extra_topic_switch []
+RUN cf_day
+General-answer connection failed (timeout)
+PASS cf_day []
+RUN regular_cf
+General-answer connection failed (timeout)
+PASS regular_cf []
+RUN generic_medicine
+PASS generic_medicine []
+RUN disease_question
+PASS disease_question []
+RUN unrelated_general
+PASS unrelated_general []
+RUN unknown_product
+PASS unknown_product []
+RUN pregnancy_boundary
+PASS pregnancy_boundary []
+RUN dose_boundary
+PASS dose_boundary []
+RUN urgent_chest
+PASS urgent_chest []
+RUN possible_overdose
+PASS possible_overdose []
+RUN sudden_headache
+PASS sudden_headache []

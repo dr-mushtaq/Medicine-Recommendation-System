@@ -1,0 +1,293 @@
+2026-11-05 11:56:58.090 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-11-05 11:56:58.111 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+/Users/sf033/Documents/Github/Medicine-Recommendation-System/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+test_date_filter_and_privacy (test_analytics.AnalyticsTests) ... ok
+test_empty (test_analytics.AnalyticsTests) ... ok
+test_model_failures_are_counted_without_question_text (test_analytics.AnalyticsTests) ... ok
+test_reruns_and_duplicate_lists_do_not_inflate_counts (test_analytics.AnalyticsTests) ... ok
+test_withheld_uncertain_and_urgent_exclude_medicines (test_analytics.AnalyticsTests) ... ok
+test_accepts_saved_chat_and_active_selection (test_browser_history.BrowserHistoryTests) ... ok
+test_rejects_malformed_history (test_browser_history.BrowserHistoryTests) ... ok
+test_inline_location_and_later_hospital_question_use_shared_area (test_care_navigation.CareNavigationTests) ... ok
+test_location_outside_hospital_conversation_is_not_intercepted (test_care_navigation.CareNavigationTests) ... ok
+test_location_reply_completes_hospital_search_without_symptom_prediction (test_care_navigation.CareNavigationTests) ... ok
+test_saved_hospital_question_accepts_bare_area (test_care_navigation.CareNavigationTests) ... ok
+test_symptoms_are_not_taken_as_location (test_care_navigation.CareNavigationTests) ... ok
+test_urgent_state_can_still_request_help_finding_hospital (test_care_navigation.CareNavigationTests) ... ok
+test_first_turn_edit_resets_title (test_chat_edit.ChatEditTests) ... ok
+test_legacy_attachment_recovery_and_exact_new_report_identity (test_chat_edit.ChatEditTests) ... ok
+test_older_chat_without_snapshots_replays_prior_turns (test_chat_edit.ChatEditTests) ... ok
+test_removed_file_is_excluded_from_legacy_snapshot (test_chat_edit.ChatEditTests) ... ok
+test_restores_state_before_latest_turn (test_chat_edit.ChatEditTests) ... ok
+test_affirming_urgent_followup_triggers_urgent_response (test_chatbot.DialogueTests) ... ok
+test_chat_allergy_is_retained (test_chatbot.DialogueTests) ... ok
+test_common_symptoms_require_context_before_naming_condition (test_chatbot.DialogueTests) ... ok
+test_context_does_not_leak_between_chats (test_chatbot.DialogueTests) ... ok
+test_context_withholds_medicine_names (test_chatbot.DialogueTests) ... ok
+test_correction_removes_symptom (test_chatbot.DialogueTests) ... ok
+test_duplicate_csv_feature_is_merged (test_chatbot.DialogueTests) ... ok
+test_emergency_persists (test_chatbot.DialogueTests) ... ok
+test_family_history_is_not_asked_as_symptom (test_chatbot.DialogueTests) ... ok
+test_followup_yes_and_memory (test_chatbot.DialogueTests) ... ok
+test_headache_after_sex_uses_context_specific_reply (test_chatbot.DialogueTests) ... ok
+test_low_confidence_has_no_medicine_list (test_chatbot.DialogueTests) ... ok
+test_metrics_match_json (test_chatbot.DialogueTests) ... ok
+test_negated_headache_after_sex_is_not_recorded (test_chatbot.DialogueTests) ... ok
+test_negated_typo_and_ulcer (test_chatbot.DialogueTests) ... ok
+test_negation_and_longer_alias (test_chatbot.DialogueTests) ... ok
+test_no_does_not_enter_symptoms (test_chatbot.DialogueTests) ... ok
+test_not_sure_does_not_trap_user_in_duration_question (test_chatbot.DialogueTests) ... ok
+test_partial_yes_completes_headache_followup (test_chatbot.DialogueTests) ... ok
+test_pregnancy_ibuprofen_question_uses_curated_safety_source (test_chatbot.DialogueTests) ... ok
+test_reported_typo_and_ulcer_followup (test_chatbot.DialogueTests) ... ok
+test_show_results_uses_same_uncertain_result_path (test_chatbot.DialogueTests) ... ok
+test_specific_ulcer_context_on_first_turn (test_chatbot.DialogueTests) ... ok
+test_spelling_is_bounded (test_chatbot.DialogueTests) ... ok
+test_split_has_no_pattern_overlap (test_chatbot.DialogueTests) ... ok
+test_sudden_severe_headache_after_sex_is_urgent (test_chatbot.DialogueTests) ... ok
+test_two_denied_followups_show_uncertain_results (test_chatbot.DialogueTests) ... ok
+test_two_followups_end_with_guidance_not_a_named_condition (test_chatbot.DialogueTests) ... ok
+test_uncertain_reply_uses_plain_language_without_a_followup (test_chatbot.DialogueTests) ... ok
+test_unsupported_input_does_not_predict (test_chatbot.DialogueTests) ... ok
+test_accepts_files_once_without_sending_and_retains_existing_drafts (test_composer_drop.ComposerDropTests) ... ok
+test_browser_errors_are_consumed_once (test_composer_drop.ComposerDropTests) ... ok
+test_checks_count_encoding_size_and_sensitive_filename (test_composer_drop.ComposerDropTests) ... ok
+test_rejects_whole_batch_and_preserves_drafts (test_composer_drop.ComposerDropTests) ... ok
+test_wrong_chat_and_disabled_events_cannot_attach_later (test_composer_drop.ComposerDropTests) ... ok
+test_added_condition_has_no_medicine_output (test_context.ContextTests) ... ok
+test_authored_splits_are_disjoint (test_context.ContextTests) ... ok
+test_bare_medicine_uses_symptoms_after_uncertain_result (test_context.ContextTests) ... ok
+test_duration_followup_preserves_pending_and_symptoms (test_context.ContextTests) ... ok
+test_emergency_cannot_be_overridden_by_summary (test_context.ContextTests) ... ok
+test_explicit_condition_medicine_lookup_without_previous_match (test_context.ContextTests) ... ok
+test_medicine_and_dose_requests_respect_context (test_context.ContextTests) ... ok
+test_medicine_followup_does_not_repeat_known_duration (test_context.ContextTests) ... ok
+test_new_symptoms_do_not_use_stale_match_for_medicine_question (test_context.ContextTests) ... ok
+test_no_context_does_not_invent_a_match (test_context.ContextTests) ... General-answer connection failed (URLError)
+ok
+test_report_help_routes_to_upload_instructions_without_prediction (test_context.ContextTests) ... ok
+test_summary_and_explanation_do_not_repredict (test_context.ContextTests) ... ok
+test_added_profiles_do_not_fabricate_medicine_mappings (test_data_quality.DataQualityTests) ... ok
+test_conflicting_pattern_is_rejected (test_data_quality.DataQualityTests) ... ok
+test_current_data_passes (test_data_quality.DataQualityTests) ... ok
+test_duplicate_csv_conditions_cannot_silently_overwrite (test_data_quality.DataQualityTests) ... ok
+test_duplicate_source_row_is_rejected (test_data_quality.DataQualityTests) ... ok
+test_generated_examples_cannot_enter_holdouts_or_claim_source_rows (test_data_quality.DataQualityTests) ... ok
+test_generated_family_cannot_use_a_held_out_parent (test_data_quality.DataQualityTests) ... ok
+test_missing_csv_condition_is_rejected (test_data_quality.DataQualityTests) ... ok
+test_missing_metadata_is_resolved_without_changing_ids (test_data_quality.DataQualityTests) ... ok
+test_reference_records_cannot_silently_become_training_data (test_data_quality.DataQualityTests) ... ok
+test_unknown_training_symptom_is_rejected (test_data_quality.DataQualityTests) ... ok
+test_back_pain_followup_uses_source_not_old_assistant_claim (test_general_qa.GeneralQuestionTests) ... General-answer connection failed (URLError)
+ok
+test_causal_followup_is_not_classifier_result_explanation (test_general_qa.GeneralQuestionTests) ... ok
+test_curated_reference_has_review_date_and_help_notes (test_general_qa.GeneralQuestionTests) ... ok
+test_emergency_takes_priority (test_general_qa.GeneralQuestionTests) ... ok
+test_general_provider_receives_recent_conversation_and_latest_question (test_general_qa.GeneralQuestionTests) ... ok
+test_hosted_connection_error_redacts_key (test_general_qa.GeneralQuestionTests) ... General-answer connection failed (URLError)
+ok
+test_hosted_endpoint_requires_configuration (test_general_qa.GeneralQuestionTests) ... General-answer model configuration is incomplete
+ok
+test_hosted_http_error_reports_status_without_leaking_response (test_general_qa.GeneralQuestionTests) ... General-answer provider returned HTTP 403
+ok
+test_hosted_openai_compatible_endpoint (test_general_qa.GeneralQuestionTests) ... ok
+test_known_symptom_with_context_uses_qwen_and_remembers_symptom (test_general_qa.GeneralQuestionTests) ... ok
+test_missing_optional_secrets_do_not_render_configuration_errors (test_general_qa.GeneralQuestionTests) ... ok
+test_new_information_topic_replaces_pain_focus_for_followups (test_general_qa.GeneralQuestionTests) ... ok
+test_new_spine_pain_is_not_treated_as_old_symptom_duration (test_general_qa.GeneralQuestionTests) ... ok
+test_offline_pain_reply_does_not_list_only_old_symptoms (test_general_qa.GeneralQuestionTests) ... General-answer connection failed (URLError)
+ok
+test_old_assistant_urgency_claim_is_not_repeated_for_duration_alone (test_general_qa.GeneralQuestionTests) ... ok
+test_old_recovery_attachment_is_not_sent_to_provider (test_general_qa.GeneralQuestionTests) ... ok
+test_personal_symptom_report_is_not_general_question (test_general_qa.GeneralQuestionTests) ... ok
+test_rate_limit_is_retryable_without_exposing_provider_response (test_general_qa.GeneralQuestionTests) ... General-answer provider returned HTTP 429
+ok
+test_readable_report_has_a_grounded_fallback_on_timeout (test_general_qa.GeneralQuestionTests) ... General-answer connection failed (TimeoutError)
+ok
+test_reasoning_is_not_shown_to_user (test_general_qa.GeneralQuestionTests) ... ok
+test_reference_answer_has_only_real_source (test_general_qa.GeneralQuestionTests) ... ok
+test_reference_summary_fallback_without_downloaded_medembed (test_general_qa.GeneralQuestionTests) ... ok
+test_report_without_first_person_still_answers_current_concern (test_general_qa.GeneralQuestionTests) ... ok
+test_reported_warning_signs_do_not_trigger_urgency_correction (test_general_qa.GeneralQuestionTests) ... ok
+test_routing_preserves_symptom_state (test_general_qa.GeneralQuestionTests) ... ok
+test_saved_chat_recovers_latest_pain_before_reason_question (test_general_qa.GeneralQuestionTests) ... ok
+test_source_information_is_available_without_provider (test_general_qa.GeneralQuestionTests) ... General-answer connection failed (URLError)
+ok
+test_split_pdf_table_is_read_in_an_ongoing_conversation (test_general_qa.GeneralQuestionTests) ... General-answer connection failed (URLError)
+ok
+test_streamlit_secrets_configure_hosted_endpoint (test_general_qa.GeneralQuestionTests) ... ok
+test_truncated_qwen_reasoning_uses_sources_instead (test_general_qa.GeneralQuestionTests) ... ok
+test_unrecognized_health_report_uses_qwen_without_erasing_state (test_general_qa.GeneralQuestionTests) ... ok
+test_combination_name_order_and_punctuation_are_not_new_medicines (test_health_library.HealthLibraryTests) ... ok
+test_condition_short_name_is_matched (test_health_library.HealthLibraryTests) ... ok
+test_excerpts_do_not_crop_medical_sentences (test_health_library.HealthLibraryTests) ... ok
+test_new_topic_is_used_when_answer_provider_is_unavailable (test_health_library.HealthLibraryTests) ... General-answer connection failed (URLError)
+ok
+test_parser_keeps_nested_list_text (test_health_library.HealthLibraryTests) ... ok
+test_real_library_is_valid_and_not_training_evidence (test_health_library.HealthLibraryTests) ... ok
+test_scope_escalation_and_source_spoof_rejected (test_health_library.HealthLibraryTests) ... ok
+test_benchmarks_keep_tasks_and_groups_separate (test_hospital_benchmarks.HospitalBenchmarkTests) ... ok
+test_duplicate_reference_rejected (test_hospital_symptoms.HospitalSymptomTests) ... ok
+test_new_phrase_is_recognized_and_negation_is_preserved (test_hospital_symptoms.HospitalSymptomTests) ... ok
+test_published_sources_and_mappings (test_hospital_symptoms.HospitalSymptomTests) ... ok
+test_unrelated_source_and_patient_claim_rejected (test_hospital_symptoms.HospitalSymptomTests) ... ok
+test_account_recovery_file_is_rejected_before_reading (test_medical_files.MedicalFileTests) ... ok
+test_invalid_or_oversized_files_are_rejected (test_medical_files.MedicalFileTests) ... ok
+test_lab_unit_question_is_not_mistaken_for_a_dose_request (test_medical_files.MedicalFileTests) ... ok
+test_pdf_preserves_text_and_page_reference (test_medical_files.MedicalFileTests) ... ok
+test_report_context_cannot_bypass_dose_or_urgent_headache_guards (test_medical_files.MedicalFileTests) ... ok
+test_report_questions_bypass_symptom_classifier_but_not_urgency (test_medical_files.MedicalFileTests) ... ok
+test_text_keeps_values_and_units (test_medical_files.MedicalFileTests) ... ok
+test_unreadable_pdf_does_not_silently_omit_pages (test_medical_files.MedicalFileTests) ... ok
+test_uploaded_report_is_data_in_model_request (test_medical_files.MedicalFileTests) ... ok
+test_dose_and_urgent_boundaries_remain (test_medicine_information.MedicineInformationTests) ... ok
+test_generated_brand_contradiction_uses_verified_reference (test_medicine_information.MedicineInformationTests) ... ok
+test_generic_medicine_lookup_works_offline (test_medicine_information.MedicineInformationTests) ... General-answer connection failed (URLError)
+ok
+test_panadol_cf_brand_and_variants_work_offline (test_medicine_information.MedicineInformationTests) ... General-answer connection failed (URLError)
+General-answer connection failed (URLError)
+General-answer connection failed (URLError)
+ok
+test_product_names_route_to_general_answer_without_symptom_interview (test_medicine_information.MedicineInformationTests) ... ok
+test_profile_prevents_symptom_based_product_selection (test_medicine_information.MedicineInformationTests) ... ok
+test_qwen_receives_exact_product_without_old_symptom_history (test_medicine_information.MedicineInformationTests) ... ok
+test_screenshot_followups_have_local_medicine_examples (test_medicine_information.MedicineInformationTests) ... ok
+test_unknown_product_does_not_claim_all_databases_were_searched (test_medicine_information.MedicineInformationTests) ... ok
+test_variants_do_not_inherit_regular_cf_ingredients (test_medicine_information.MedicineInformationTests) ... General-answer connection failed (URLError)
+General-answer connection failed (URLError)
+ok
+test_duplicate_family_does_not_gain_extra_training_weight (test_ml_training.TrainingWorkflowTests) ... ok
+test_fixed_holdouts_reject_related_training_examples (test_ml_training.TrainingWorkflowTests) ... ok
+test_metrics_keep_label_order_and_unevaluated_classes (test_ml_training.TrainingWorkflowTests) ... ok
+test_stratified_split_is_repeatable_and_disjoint (test_ml_training.TrainingWorkflowTests) ... ok
+test_child_symptom_report_does_not_offer_adult_medicine (test_question_matrix.QuestionMatrixTests) ... ok
+test_denied_symptom_does_not_get_relief (test_question_matrix.QuestionMatrixTests) ... ok
+test_dose_boundary_00 (test_question_matrix.QuestionMatrixTests) ... ok
+test_dose_boundary_01 (test_question_matrix.QuestionMatrixTests) ... ok
+test_dose_boundary_02 (test_question_matrix.QuestionMatrixTests) ... ok
+test_dose_boundary_03 (test_question_matrix.QuestionMatrixTests) ... ok
+test_dose_boundary_04 (test_question_matrix.QuestionMatrixTests) ... ok
+test_exact_user_conversation_keeps_medicine_information_visible (test_question_matrix.QuestionMatrixTests) ... ok
+test_followup_does_not_repeat_fever_or_ask_opposite_bowel_symptom (test_question_matrix.QuestionMatrixTests) ... ok
+test_missing_relief_label_does_not_invent_a_product (test_question_matrix.QuestionMatrixTests) ... ok
+test_named_product_offline_still_has_exact_variant_reference (test_question_matrix.QuestionMatrixTests) ... General-answer connection failed (URLError)
+ok
+test_no_source_does_not_invent_a_medicine (test_question_matrix.QuestionMatrixTests) ... ok
+test_product_topic_00 (test_question_matrix.QuestionMatrixTests) ... ok
+test_product_topic_01 (test_question_matrix.QuestionMatrixTests) ... ok
+test_product_topic_02 (test_question_matrix.QuestionMatrixTests) ... ok
+test_product_topic_03 (test_question_matrix.QuestionMatrixTests) ... ok
+test_product_topic_04 (test_question_matrix.QuestionMatrixTests) ... ok
+test_product_topic_05 (test_question_matrix.QuestionMatrixTests) ... ok
+test_product_topic_06 (test_question_matrix.QuestionMatrixTests) ... ok
+test_product_topic_07 (test_question_matrix.QuestionMatrixTests) ... ok
+test_product_topic_08 (test_question_matrix.QuestionMatrixTests) ... ok
+test_product_topic_09 (test_question_matrix.QuestionMatrixTests) ... ok
+test_product_topic_10 (test_question_matrix.QuestionMatrixTests) ... ok
+test_product_topic_11 (test_question_matrix.QuestionMatrixTests) ... ok
+test_product_topic_12 (test_question_matrix.QuestionMatrixTests) ... ok
+test_product_topic_13 (test_question_matrix.QuestionMatrixTests) ... ok
+test_product_topic_14 (test_question_matrix.QuestionMatrixTests) ... ok
+test_product_topic_15 (test_question_matrix.QuestionMatrixTests) ... ok
+test_profile_blocks_personal_medicine_selection (test_question_matrix.QuestionMatrixTests) ... ok
+test_source_relief_replaces_bad_classifier_medicine_mapping (test_question_matrix.QuestionMatrixTests) ... ok
+test_symptom_relief_00 (test_question_matrix.QuestionMatrixTests) ... ok
+test_symptom_relief_01 (test_question_matrix.QuestionMatrixTests) ... ok
+test_symptom_relief_02 (test_question_matrix.QuestionMatrixTests) ... ok
+test_symptom_relief_03 (test_question_matrix.QuestionMatrixTests) ... ok
+test_symptom_relief_04 (test_question_matrix.QuestionMatrixTests) ... ok
+test_symptom_relief_05 (test_question_matrix.QuestionMatrixTests) ... ok
+test_symptom_relief_06 (test_question_matrix.QuestionMatrixTests) ... ok
+test_urgent_priority_00 (test_question_matrix.QuestionMatrixTests) ... ok
+test_urgent_priority_01 (test_question_matrix.QuestionMatrixTests) ... ok
+test_urgent_priority_02 (test_question_matrix.QuestionMatrixTests) ... ok
+test_urgent_priority_03 (test_question_matrix.QuestionMatrixTests) ... ok
+test_urgent_priority_04 (test_question_matrix.QuestionMatrixTests) ... ok
+test_urgent_priority_05 (test_question_matrix.QuestionMatrixTests) ... ok
+test_urgent_priority_06 (test_question_matrix.QuestionMatrixTests) ... ok
+test_urgent_priority_07 (test_question_matrix.QuestionMatrixTests) ... ok
+test_urgent_priority_08 (test_question_matrix.QuestionMatrixTests) ... ok
+test_collected_cohorts_pass_audit_without_changing_classifier (test_regional_data.RegionalDataTests) ... ok
+test_deduplication_keeps_provenance_and_quarantines_conflicting_targets (test_regional_data.RegionalDataTests) ... ok
+test_missing_values_preserve_zero_and_source_codes (test_regional_data.RegionalDataTests) ... ok
+test_prepared_data_contains_only_clinical_allowlist (test_regional_data.RegionalDataTests) ... ok
+test_research_rows_cannot_silently_become_training_data (test_regional_data.RegionalDataTests) ... ok
+test_tampered_file_is_rejected (test_regional_data.RegionalDataTests) ... ok
+test_report_configuration_failure_does_not_offer_retry (test_retry_policy.RetryPolicyTests) ... ok
+test_stopped_local_service_is_not_a_retryable_report_error (test_retry_policy.RetryPolicyTests) ... General-answer connection failed (URLError)
+ok
+test_temporary_failure_still_offers_retry (test_retry_policy.RetryPolicyTests) ... ok
+test_chest_pain_paraphrases_precede_both_models (test_routing.RoutingTests) ... ok
+test_new_attachment_routes_even_with_a_short_prompt (test_routing.RoutingTests) ... ok
+test_related_report_followup_uses_qwen_without_classifier (test_routing.RoutingTests) ... ok
+test_report_then_social_then_symptoms_then_report (test_routing.RoutingTests) ... ok
+test_unrelated_question_timeout_does_not_repeat_saved_report (test_routing.RoutingTests) ... General-answer connection failed (URLError)
+ok
+test_dictionary_never_supplies_training_or_treatment_rules (test_source_expansion.SourceExpansionTests) ... ok
+test_features_encode_words_and_have_training_examples (test_source_expansion.SourceExpansionTests) ... ok
+test_parser_ignores_treatment_lists_and_rejects_redirect (test_source_expansion.SourceExpansionTests) ... ok
+test_analytics_empty_then_records_real_activity_once (test_ui.UITests) ... 2026-11-05 12:02:09.180 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_attachment_menu_and_report_explanation (test_ui.UITests) ... 2026-11-05 12:02:26.131 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_chat_navigation_and_isolated_history (test_ui.UITests) ... 2026-11-05 12:02:28.820 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_clear_saved_conversations_resets_session (test_ui.UITests) ... 2026-11-05 12:02:51.357 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_context_hides_previous_medicines_and_is_isolated (test_ui.UITests) ... 2026-11-05 12:02:57.887 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_context_summary_uses_previous_messages (test_ui.UITests) ... 2026-11-05 12:03:01.542 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_denied_followups_render_results_with_message (test_ui.UITests) ... 2026-11-05 12:03:07.167 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_dropped_file_preserves_message_can_remove_and_send (test_ui.UITests) ... 2026-11-05 12:03:19.290 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_duration_other_has_free_text_input (test_ui.UITests) ... 2026-11-05 12:03:21.633 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_duration_radio_submits_once_and_then_disappears (test_ui.UITests) ... 2026-11-05 12:03:27.149 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_edit_file_close_preserves_text_cancel_and_removes_on_save (test_ui.UITests) ... 2026-11-05 12:03:31.800 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_edit_last_message_replaces_reply_and_restores_state (test_ui.UITests) ... 2026-11-05 12:03:37.994 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_file_and_message_send_together (test_ui.UITests) ... 2026-11-05 12:03:44.897 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_file_remains_attached_when_editing_and_retrying (test_ui.UITests) ... 2026-11-05 12:03:46.361 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_hospital_dataset_preview_separates_research_from_training (test_ui.UITests) ... 2026-11-05 12:03:50.747 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_more_options_is_removed (test_ui.UITests) ... 2026-11-05 12:04:04.539 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_only_new_reply_has_entrance_animation (test_ui.UITests) ... 2026-11-05 12:04:09.307 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_removing_draft_allows_text_only_send (test_ui.UITests) ... 2026-11-05 12:04:13.411 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_retry_reads_pdf_added_during_an_ongoing_conversation (test_ui.UITests) ... 2026-11-05 12:04:18.872 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+General-answer provider returned HTTP 429
+ok
+test_retry_replaces_failed_general_answer (test_ui.UITests) ... 2026-11-05 12:04:25.469 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+General-answer provider returned HTTP 429
+ok
+test_returning_to_chat_reveals_last_message_once (test_ui.UITests) ... 2026-11-05 12:04:31.792 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_starter_and_followup_are_functional (test_ui.UITests) ... 2026-11-05 12:04:37.974 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_urgent_notice_persists_without_medicine_expanders (test_ui.UITests) ... 2026-11-05 12:04:44.782 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_voice_transcript_is_editable_removable_and_can_send_alone (test_ui.UITests) ... 2026-11-05 12:04:47.082 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_network_failure_is_recoverable (test_web_references.WebReferenceTests) ... ok
+test_only_trusted_https_sources_are_accepted (test_web_references.WebReferenceTests) ... ok
+test_search_fetches_source_and_strips_scripts (test_web_references.WebReferenceTests) ... ok
+
+----------------------------------------------------------------------
+Ran 232 tests in 463.102s
+
+OK
+Chat scroll checks passed
+
+File drop component: valid drop, highlight, limits, read failure, disabled/outside/text drops and cleanup passed.
+
+Voice component: stop, cancel, permission denial, unsupported browser and empty speech passed.
+
